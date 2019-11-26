@@ -10,7 +10,6 @@ import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ActivityMovieBinding
 import kotlinx.android.synthetic.main.view_toolbar.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -23,7 +22,7 @@ class MovieActivity : AppCompatActivity() {
 
     private val movieViewModel: MovieViewModel by viewModel()
 
-    private val adapter: MovieAdapter by inject()
+    lateinit var adapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +30,10 @@ class MovieActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.run {
-            setDisplayShowTitleEnabled(true)
             title = getString(R.string.app_name)
         }
+
+        adapter = MovieAdapter(this)
 
         val rvData = binding.rvData
         rvData.layoutManager = LinearLayoutManager(this)

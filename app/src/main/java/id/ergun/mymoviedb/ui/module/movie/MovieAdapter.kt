@@ -29,7 +29,7 @@ class MovieAdapter(private val context: Context) : RecyclerView.Adapter<MovieAda
             .into(holder.ivPoster)
 
         holder.btnDetail.setOnClickListener {
-            context.startActivity(MovieDetailActivity.newIntent(context, movie))
+            (context as MovieActivity).startActivity(MovieDetailActivity.newIntent(context, movie))
         }
     }
 
