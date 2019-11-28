@@ -3,6 +3,8 @@ package id.ergun.mymoviedb.ui.module.movie.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +15,9 @@ import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ActivityMovieDetailBinding
-import kotlinx.android.synthetic.main.activity_movie_detail.*
+import kotlinx.android.synthetic.main.activity_movie_detail.iv_toolbar
+import kotlinx.android.synthetic.main.activity_movie_detail.toolbar
+import kotlinx.android.synthetic.main.activity_movie_detail.tv_overview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.android.synthetic.main.activity_movie_detail.collapsing_toolbar as collapsingToolbar
 
@@ -52,14 +56,14 @@ class MovieDetailActivity : AppCompatActivity() {
         movieViewModel.movie.observe(this,
             Observer<Movie> {
                 if (it != null) {
-                    collapsingToolbar.title = it.title
+                  collapsingToolbar.title = getString(it.title)
 
                     Glide.with(this)
                         .load(it.image)
                         .apply(RequestOptions.centerInsideTransform())
                         .into(iv_toolbar)
 
-                    tv_overview.text = it.overview
+                  tv_overview.text = getString(it.overview)
                 } else {
                     Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
                 }
@@ -71,8 +75,17 @@ class MovieDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
+          R.id.action_change_settings -> {
+            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+            startActivity(mIntent)
+          }
         }
         return super.onOptionsItemSelected(item)
     }
+
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.menu_setting, menu)
+    return super.onCreateOptionsMenu(menu)
+  }
 
 }

@@ -3,7 +3,7 @@ package id.ergun.mymoviedb.ui.module.movie
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import id.ergun.mymoviedb.data.model.Movie
-import id.ergun.mymoviedb.data.repository.MovieRepository
+import id.ergun.mymoviedb.data.repository.movie.MovieRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

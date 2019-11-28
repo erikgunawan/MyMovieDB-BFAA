@@ -2,6 +2,7 @@ package id.ergun.mymoviedb.data.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -15,11 +16,11 @@ class Movie(
     val id: Int? = null,
     val originalLanguage: String = "",
     val originalTitle: String = "",
-    val overview: String = "",
+  @StringRes val overview: Int,
     val popularity: Double = 0.0,
     val posterPath: String = "",
     val releaseDate: String = "",
-    val title: String = "",
+  @StringRes val title: Int,
     val video: Boolean = false,
     val voteAverage: Int = 0,
     val voteCount: Int = 0,

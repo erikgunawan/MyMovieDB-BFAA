@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="id.ergun.mymoviedb.ui.module.movie.MovieActivity"
+            android:name="id.ergun.mymoviedb.ui.module.main.MainActivity"
             android:label="My MovieDB">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -22,5 +22,6 @@
         </activity>
 
         <activity android:name=".ui.module.movie.detail.MovieDetailActivity" />
+      <activity android:name=".ui.module.tv.detail.TvShowDetailActivity" />
     </application>
 </manifest>

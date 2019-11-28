@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ItemMovieBinding
+import id.ergun.mymoviedb.ui.module.main.MainActivity
 import id.ergun.mymoviedb.ui.module.movie.detail.MovieDetailActivity
 
 /**
@@ -21,7 +22,7 @@ class MovieAdapter(private val context: Context) : RecyclerView.Adapter<MovieAda
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movies[position]
-        holder.tvTitle.text = movie.title
+        holder.tvTitle.text = context.getString(movie.title)
 
         Glide.with(holder.itemView.context)
             .load(movie.image)
@@ -29,7 +30,15 @@ class MovieAdapter(private val context: Context) : RecyclerView.Adapter<MovieAda
             .into(holder.ivPoster)
 
         holder.btnDetail.setOnClickListener {
-            (context as MovieActivity).startActivity(MovieDetailActivity.newIntent(context, movie))
+            when (context) {
+                is MainActivity,
+                is MovieActivity -> context.startActivity(
+                    MovieDetailActivity.newIntent(
+                        context,
+                        movie
+                    )
+                )
+            }
         }
     }
 

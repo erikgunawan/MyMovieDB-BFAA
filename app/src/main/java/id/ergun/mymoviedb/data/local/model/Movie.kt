@@ -1,6 +1,7 @@
 package id.ergun.mymoviedb.data.local.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
 /**
  * Created by erikgunawan on 24/11/19.
@@ -8,15 +9,15 @@ import androidx.annotation.DrawableRes
 class Movie(
     val adult: Boolean = false,
     val backdropPath: String = "",
-    val genreIds: MutableList<Int>? = mutableListOf(),
+  val genreIds: MutableList<Int> = mutableListOf(),
     val id: Int? = null,
     val originalLanguage: String = "",
     val originalTitle: String = "",
-    val overview: String = "",
+  @StringRes val overview: Int,
     val popularity: Double = 0.0,
     val posterPath: String = "",
     val releaseDate: String = "",
-    val title: String = "",
+  @StringRes val title: Int,
     val video: Boolean = false,
     val voteAverage: Int = 0,
     val voteCount: Int = 0,

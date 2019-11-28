@@ -1,4 +1,4 @@
-package id.ergun.mymoviedb.data.repository
+package id.ergun.mymoviedb.data.repository.movie
 
 import id.ergun.mymoviedb.data.model.Movie
 import io.reactivex.Observable

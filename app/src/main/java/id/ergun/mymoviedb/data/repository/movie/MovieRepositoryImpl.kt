@@ -1,4 +1,4 @@
-package id.ergun.mymoviedb.data.repository
+package id.ergun.mymoviedb.data.repository.movie
 
 import id.ergun.mymoviedb.data.local.db.MovieData
 import id.ergun.mymoviedb.data.mapper.MovieMapper
