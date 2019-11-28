@@ -15,11 +15,8 @@ import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ActivityMovieDetailBinding
-import kotlinx.android.synthetic.main.activity_movie_detail.iv_toolbar
-import kotlinx.android.synthetic.main.activity_movie_detail.toolbar
-import kotlinx.android.synthetic.main.activity_movie_detail.tv_overview
+import kotlinx.android.synthetic.main.view_toolbar.toolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlinx.android.synthetic.main.activity_movie_detail.collapsing_toolbar as collapsingToolbar
 
 /**
  * Created by erikgunawan on 24/11/19.
@@ -56,14 +53,14 @@ class MovieDetailActivity : AppCompatActivity() {
         movieViewModel.movie.observe(this,
             Observer<Movie> {
                 if (it != null) {
-                  collapsingToolbar.title = getString(it.title)
+                  binding.tvTitle.text = getString(it.title)
 
                     Glide.with(this)
                         .load(it.image)
                         .apply(RequestOptions.centerInsideTransform())
-                        .into(iv_toolbar)
+                        .into(binding.ivPoster)
 
-                  tv_overview.text = getString(it.overview)
+                  binding.tvOverview.text = getString(it.overview)
                 } else {
                     Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
                 }
