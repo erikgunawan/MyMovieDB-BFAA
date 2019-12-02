@@ -15,11 +15,11 @@ import com.bumptech.glide.request.RequestOptions
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Tv
 import id.ergun.mymoviedb.databinding.ActivityTvShowDetailBinding
-import kotlinx.android.synthetic.main.view_toolbar.toolbar
+import kotlinx.android.synthetic.main.view_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class TvShowDetailActivity : AppCompatActivity() {
 
@@ -54,14 +54,14 @@ class TvShowDetailActivity : AppCompatActivity() {
     tvViewModel.tvShow.observe(this,
         Observer<Tv> {
           if (it != null) {
-            binding.tvTitle.text = getString(it.name)
+            binding.tvTitle.text = it.name
 
             Glide.with(this)
-                .load(it.image)
+              .load(it.posterPath)
                 .apply(RequestOptions.centerInsideTransform())
                 .into(binding.ivPoster)
 
-            binding.tvOverview.text = getString(it.overview)
+            binding.tvOverview.text = it.overview
           } else {
             Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_SHORT)
                 .show()

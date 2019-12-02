@@ -15,57 +15,60 @@ import id.ergun.mymoviedb.ui.module.movie.MovieActivity
 import id.ergun.mymoviedb.ui.module.tv.detail.TvShowDetailActivity
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class TvShowAdapter(private val context: Context) : RecyclerView.Adapter<TvShowAdapter.ViewHolder>() {
 
-  var tvShows: MutableList<Tv> = mutableListOf()
+    var tvShows: MutableList<Tv> = mutableListOf()
 
-  override fun onBindViewHolder(
-    holder: ViewHolder,
-    position: Int
-  ) {
-    val tvShow = tvShows[position]
-    holder.tvTitle.text = context.getString(tvShow.name)
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int
+    ) {
+        val tvShow = tvShows[position]
+        holder.tvTitle.text = tvShow.name
 
-    Glide.with(holder.itemView.context)
-        .load(tvShow.image)
-        .apply(RequestOptions.centerInsideTransform())
-        .into(holder.ivPoster)
+        holder.tvOverview.text = tvShow.overview
 
-    holder.btnDetail.setOnClickListener {
-      when (context) {
-        is MainActivity,
-        is MovieActivity -> context.startActivity(
-            TvShowDetailActivity.newIntent(
-                context,
-                tvShow
-            )
-        )
-      }
+        Glide.with(holder.itemView.context)
+            .load(tvShow.posterPath)
+            .apply(RequestOptions.centerInsideTransform())
+            .into(holder.ivPoster)
+
+        holder.btnDetail.setOnClickListener {
+            when (context) {
+                is MainActivity,
+                is MovieActivity -> context.startActivity(
+                    TvShowDetailActivity.newIntent(
+                        context,
+                        tvShow
+                    )
+                )
+            }
+        }
     }
-  }
 
-  override fun onCreateViewHolder(
-    parent: ViewGroup,
-    viewType: Int
-  ): ViewHolder {
-    val binding: ItemMovieBinding = DataBindingUtil.inflate(
-        LayoutInflater.from(parent.context),
-        R.layout.item_movie, parent, false
-    )
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
+        val binding: ItemMovieBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_movie, parent, false
+        )
 
-    return ViewHolder(binding)
-  }
+        return ViewHolder(binding)
+    }
 
-  override fun getItemCount(): Int {
-    return tvShows.size
-  }
+    override fun getItemCount(): Int {
+        return tvShows.size
+    }
 
-  inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-    val tvTitle = binding.tvTitle!!
-    val ivPoster = binding.ivImage!!
-    val btnDetail = binding.viewItem!!
-  }
+    inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
+        val tvTitle = binding.tvTitle!!
+        val tvOverview = binding.tvOverview!!
+        val ivPoster = binding.ivImage!!
+        val btnDetail = binding.viewItem!!
+    }
 
 }

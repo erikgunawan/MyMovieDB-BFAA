@@ -1,15 +1,27 @@
 package id.ergun.mymoviedb.data.mapper
 
-import id.ergun.mymoviedb.data.local.model.Movie
+import id.ergun.mymoviedb.data.Const
+import id.ergun.mymoviedb.data.model.Movie
+import id.ergun.mymoviedb.data.remote.model.MovieResponse
 
 class MovieMapper {
 
-    fun fromLocal(movie: Movie): id.ergun.mymoviedb.data.model.Movie {
-        return id.ergun.mymoviedb.data.model.Movie(
+    fun fromRemote(response: MovieResponse): MutableList<Movie> {
+        val movies = mutableListOf<Movie>()
+        response.results?.forEach {
+            movies.add(fromRemote(it))
+        }
+
+        return movies
+    }
+
+    private fun fromRemote(movie: MovieResponse.Result): Movie {
+        return Movie(
             id = movie.id,
-            title = movie.title,
-            image = movie.image,
-            overview = movie.overview
+            title = movie.title ?: "",
+            posterPath = Const.IMAGE_URL + movie.posterPath,
+            originalTitle = movie.originalTitle ?: "",
+            overview = movie.overview ?: ""
         )
     }
 }

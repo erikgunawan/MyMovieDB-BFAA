@@ -1,22 +1,20 @@
 package id.ergun.mymoviedb.data.repository.tvShow
 
-import id.ergun.mymoviedb.data.local.db.TvShowData
-import id.ergun.mymoviedb.data.mapper.TvShowMapper
-import id.ergun.mymoviedb.data.model.Tv
+import android.content.Context
+import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.data.remote.AppService
+import id.ergun.mymoviedb.data.remote.model.TvResponse
 import io.reactivex.Observable
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class TvShowRepositoryImpl(
-  private val localData: TvShowData
+    private val context: Context,
+    private val remoteData: AppService
 ) : TvShowRepository {
 
-  override fun getTvShows(): Observable<MutableList<Tv>> {
-    return Observable.just(
-        localData.getTvShows().map {
-          TvShowMapper().fromLocal(it)
-        }.toMutableList()
-    )
+    override fun getTvShows(): Observable<TvResponse> {
+        return remoteData.getTvShows(language = context.getString(R.string.language_param))
   }
 }

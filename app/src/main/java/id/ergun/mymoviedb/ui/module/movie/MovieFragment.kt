@@ -1,20 +1,20 @@
 package id.ergun.mymoviedb.ui.module.movie
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
-import kotlinx.android.synthetic.main.fragment_movie.rv_data
+import kotlinx.android.synthetic.main.fragment_movie.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class MovieFragment : Fragment() {
 
@@ -30,27 +30,30 @@ class MovieFragment : Fragment() {
     return inflater.inflate(R.layout.fragment_movie, container, false)
   }
 
+  @SuppressLint("SetTextI18n")
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
+    va_data.displayedChild = 0
 
     adapter = MovieAdapter(context!!)
 
-    val rvData = rv_data
-    rvData.layoutManager = LinearLayoutManager(context!!)
-    rvData.setHasFixedSize(true)
-    rvData.adapter = adapter
+    rv_data.layoutManager = LinearLayoutManager(context!!)
+    rv_data.setHasFixedSize(true)
+    rv_data.adapter = adapter
 
     movieViewModel.movies.observe(this,
-        Observer<MutableList<Movie>> {
-          if (it != null) {
-            adapter.movies = it
-            adapter.notifyDataSetChanged()
-          } else {
-            Toast.makeText(context!!, "error", Toast.LENGTH_SHORT)
-                .show()
-          }
+      Observer<MutableList<Movie>> {
+        if (it != null) {
+          adapter.movies = it
+          adapter.notifyDataSetChanged()
+
+          va_data.displayedChild = 1
+        } else {
+          va_data.displayedChild = 2
+          tv_message.text = "Terjadi kesalahan"
         }
+      }
     )
     movieViewModel.getMovies()
   }

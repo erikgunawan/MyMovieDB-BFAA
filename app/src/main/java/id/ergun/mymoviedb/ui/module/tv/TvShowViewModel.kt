@@ -2,6 +2,7 @@ package id.ergun.mymoviedb.ui.module.tv
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import id.ergun.mymoviedb.data.mapper.TvShowMapper
 import id.ergun.mymoviedb.data.model.Tv
 import id.ergun.mymoviedb.data.repository.tvShow.TvShowRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -9,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class TvShowViewModel(private val repository: TvShowRepository) : ViewModel() {
 
@@ -22,6 +23,7 @@ class TvShowViewModel(private val repository: TvShowRepository) : ViewModel() {
         repository.getTvShows().subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()
         )
+            .map { TvShowMapper().fromRemote(it) }
             .subscribe(
                 {
                   movies.value = it

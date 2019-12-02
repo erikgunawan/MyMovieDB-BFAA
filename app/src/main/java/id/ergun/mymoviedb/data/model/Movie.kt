@@ -1,8 +1,6 @@
 package id.ergun.mymoviedb.data.model
 
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -16,13 +14,12 @@ class Movie(
     val id: Int? = null,
     val originalLanguage: String = "",
     val originalTitle: String = "",
-  @StringRes val overview: Int,
+    val overview: String = "",
     val popularity: Double = 0.0,
     val posterPath: String = "",
     val releaseDate: String = "",
-  @StringRes val title: Int,
+    val title: String = "",
     val video: Boolean = false,
     val voteAverage: Int = 0,
-    val voteCount: Int = 0,
-    @DrawableRes val image: Int
+    val voteCount: Int = 0
 ) : Parcelable

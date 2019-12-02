@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="id.ergun.mymoviedb">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="id.ergun.mymoviedb.ui.App"
         android:fullBackupContent="true"
@@ -12,7 +14,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="id.ergun.mymoviedb.ui.module.main.MainActivity"
-            android:label="My MovieDB">
+            android:label="My MovieDB"
+            android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +24,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.module.movie.detail.MovieDetailActivity" />
-      <activity android:name=".ui.module.tv.detail.TvShowDetailActivity" />
+        <activity
+            android:name=".ui.module.movie.detail.MovieDetailActivity"
+            android:configChanges="orientation" />
+        <activity
+            android:name=".ui.module.tv.detail.TvShowDetailActivity"
+            android:configChanges="orientation" />
     </application>
 </manifest>

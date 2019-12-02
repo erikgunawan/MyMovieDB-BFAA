@@ -6,7 +6,7 @@ import id.ergun.mymoviedb.data.model.Tv
 import id.ergun.mymoviedb.data.repository.tvShow.TvShowRepository
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class TvShowDetailViewModel(private val repository: TvShowRepository) : ViewModel() {
 

@@ -2,6 +2,7 @@ package id.ergun.mymoviedb.ui.module.movie
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import id.ergun.mymoviedb.data.mapper.MovieMapper
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.data.repository.movie.MovieRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +21,7 @@ class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
     fun getMovies() {
         compositeDisposable.add(
             repository.getMovies().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .map { MovieMapper().fromRemote(it) }
                 .subscribe(
                     {
                         movies.value = it

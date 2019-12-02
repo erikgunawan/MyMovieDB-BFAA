@@ -22,10 +22,11 @@ class MovieAdapter(private val context: Context) : RecyclerView.Adapter<MovieAda
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = movies[position]
-        holder.tvTitle.text = context.getString(movie.title)
+        holder.tvTitle.text = movie.title
+        holder.tvOverview.text = movie.overview
 
         Glide.with(holder.itemView.context)
-            .load(movie.image)
+            .load(movie.posterPath)
             .apply(RequestOptions.centerInsideTransform())
             .into(holder.ivPoster)
 
@@ -57,6 +58,7 @@ class MovieAdapter(private val context: Context) : RecyclerView.Adapter<MovieAda
 
     inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         val tvTitle = binding.tvTitle!!
+        val tvOverview = binding.tvOverview!!
         val ivPoster = binding.ivImage!!
         val btnDetail = binding.viewItem!!
     }

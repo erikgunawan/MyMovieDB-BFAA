@@ -10,12 +10,11 @@ import androidx.fragment.app.Fragment
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.ui.module.movie.MovieFragment
 import id.ergun.mymoviedb.ui.module.tv.TvShowFragment
-import kotlinx.android.synthetic.main.activity_main.tabLayout
-import kotlinx.android.synthetic.main.activity_main.viewPager
-import kotlinx.android.synthetic.main.view_toolbar.toolbar
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_toolbar.*
 
 /**
- * Created by alfacart on 27/11/19.
+ * Created by erikgunawan on 27/11/19.
  */
 class MainActivity : AppCompatActivity() {
 
