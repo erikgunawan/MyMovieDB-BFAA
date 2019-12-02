@@ -8,4 +8,5 @@ import io.reactivex.Observable
  */
 interface MovieRepository {
     fun getMovies(): Observable<MovieResponse>
+    fun getMovieDetail(id: String): Observable<MovieResponse.Result>
 }

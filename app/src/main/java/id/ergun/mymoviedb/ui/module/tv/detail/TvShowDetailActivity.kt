@@ -63,12 +63,17 @@ class TvShowDetailActivity : AppCompatActivity() {
 
             binding.tvOverview.text = it.overview
           } else {
-            Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_SHORT)
+            Toast.makeText(
+              this,
+              getString(R.string.menu_setting_change_language),
+              Toast.LENGTH_SHORT
+            )
                 .show()
           }
         }
     )
     tvViewModel.getData(tvShow!!)
+    tvViewModel.getTvDetail(tvShow.id.toString())
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

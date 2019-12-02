@@ -8,6 +8,7 @@ import id.ergun.mymoviedb.data.remote.model.MovieResponse
 import id.ergun.mymoviedb.data.remote.model.TvResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -22,6 +23,14 @@ interface AppService {
         ) language: String = LANGUAGE_EN_US
     ): Observable<MovieResponse>
 
+    @GET("3/movie/{id}")
+    fun getMovieDetail(
+        @Path("id") id: String,
+        @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
+            LANGUAGE
+        ) language: String = LANGUAGE_EN_US
+    ): Observable<MovieResponse.Result>
+
     @GET("3/discover/tv")
     fun getTvShows(
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
@@ -29,4 +38,11 @@ interface AppService {
         ) language: String = LANGUAGE_EN_US
     ): Observable<TvResponse>
 
+    @GET("3/tv/{id}")
+    fun getTvDetail(
+        @Path("id") id: String,
+        @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
+            LANGUAGE
+        ) language: String = LANGUAGE_EN_US
+    ): Observable<TvResponse.Result>
 }

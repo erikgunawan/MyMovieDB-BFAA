@@ -17,4 +17,11 @@ class TvShowRepositoryImpl(
     override fun getTvShows(): Observable<TvResponse> {
         return remoteData.getTvShows(language = context.getString(R.string.language_param))
   }
+
+    override fun getTvDetail(id: String): Observable<TvResponse.Result> {
+        return remoteData.getTvDetail(
+            language = context.getString(R.string.language_param),
+            id = id
+        )
+    }
 }

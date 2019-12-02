@@ -17,4 +17,11 @@ class MovieRepositoryImpl(
     override fun getMovies(): Observable<MovieResponse> {
         return remoteData.getMovies(language = context.getString(R.string.language_param))
     }
+
+    override fun getMovieDetail(id: String): Observable<MovieResponse.Result> {
+        return remoteData.getMovieDetail(
+            language = context.getString(R.string.language_param),
+            id = id
+        )
+    }
 }

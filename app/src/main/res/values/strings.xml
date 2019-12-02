@@ -7,4 +7,6 @@
 
   <string name="movies">Movies</string>
   <string name="tv_show">TV Show</string>
+
+    <string name="message_error_universal">Something when wrong</string>
 </resources>

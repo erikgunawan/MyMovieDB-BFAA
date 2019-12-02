@@ -51,7 +51,7 @@ class MovieFragment : Fragment() {
           va_data.displayedChild = 1
         } else {
           va_data.displayedChild = 2
-          tv_message.text = "Terjadi kesalahan"
+          tv_message.text = getString(R.string.menu_setting_change_language)
         }
       }
     )

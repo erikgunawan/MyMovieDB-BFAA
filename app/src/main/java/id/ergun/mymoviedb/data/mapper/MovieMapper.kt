@@ -15,7 +15,7 @@ class MovieMapper {
         return movies
     }
 
-    private fun fromRemote(movie: MovieResponse.Result): Movie {
+    fun fromRemote(movie: MovieResponse.Result): Movie {
         return Movie(
             id = movie.id,
             title = movie.title ?: "",

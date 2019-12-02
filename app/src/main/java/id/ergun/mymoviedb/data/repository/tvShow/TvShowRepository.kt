@@ -8,4 +8,5 @@ import io.reactivex.Observable
  */
 interface TvShowRepository {
     fun getTvShows(): Observable<TvResponse>
+    fun getTvDetail(id: String): Observable<TvResponse.Result>
 }

@@ -46,7 +46,11 @@ class MovieActivity : AppCompatActivity() {
                     adapter.movies = it
                     adapter.notifyDataSetChanged()
                 } else {
-                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.menu_setting_change_language),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         )

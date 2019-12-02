@@ -15,7 +15,7 @@ class TvShowMapper {
         return tvShows
     }
 
-    private fun fromRemote(tv: TvResponse.Result): Tv {
+    fun fromRemote(tv: TvResponse.Result): Tv {
         return Tv(
             id = tv.id ?: 0,
             name = tv.name ?: "",
