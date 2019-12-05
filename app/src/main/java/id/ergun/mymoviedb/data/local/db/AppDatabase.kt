@@ -6,15 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import id.ergun.mymoviedb.data.Const
 import id.ergun.mymoviedb.data.local.dao.MovieDao
+import id.ergun.mymoviedb.data.local.dao.TvDao
 import id.ergun.mymoviedb.data.local.model.Movie
+import id.ergun.mymoviedb.data.local.model.Tv
 
 /**
- * Created by alfacart on 03/12/19.
+ * Created by erikgunawan on 03/12/19.
  */
-@Database(entities = [Movie::class], version = 1)
+@Database(entities = [Movie::class, Tv::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
+    abstract fun tvDao(): TvDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null

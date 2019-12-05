@@ -1,6 +1,5 @@
 package id.ergun.mymoviedb.data.mapper
 
-import id.ergun.mymoviedb.data.Const
 import id.ergun.mymoviedb.data.model.Tv
 import id.ergun.mymoviedb.data.remote.model.TvResponse
 
@@ -20,7 +19,25 @@ class TvShowMapper {
             id = tv.id ?: 0,
             name = tv.name ?: "",
             overview = tv.overview ?: "",
-            posterPath = Const.IMAGE_URL + tv.posterPath
+            posterPath = tv.posterPath ?: ""
+        )
+    }
+
+    fun fromLocal(tv: id.ergun.mymoviedb.data.local.model.Tv): Tv {
+        return Tv(
+            id = tv.id,
+            name = tv.name,
+            overview = tv.overview,
+            posterPath = tv.posterPath
+        )
+    }
+
+    fun toLocal(tv: Tv): id.ergun.mymoviedb.data.local.model.Tv {
+        return id.ergun.mymoviedb.data.local.model.Tv(
+            id = tv.id,
+            name = tv.name,
+            overview = tv.overview,
+            posterPath = tv.posterPath
         )
     }
 }

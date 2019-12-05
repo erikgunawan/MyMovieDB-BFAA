@@ -9,19 +9,19 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "movie")
 data class Movie(
 
-  @PrimaryKey
+    @PrimaryKey
   val id: Int,
-  val adult: Boolean = false,
-  val backdropPath: String = "",
+    val overview: String,
+    val posterPath: String = "",
+    val title: String
+//  val originalTitle: String = "",
+//  val adult: Boolean = false,
+//  val backdropPath: String = "",
 //  val genreIds: MutableList<Int> = mutableListOf(),
-  val originalLanguage: String = "",
-  val originalTitle: String = "",
-  val overview: String,
-  val popularity: Double = 0.0,
-  val posterPath: String = "",
-  val releaseDate: String = "",
-  val title: String,
-  val video: Boolean = false,
-  val voteAverage: Int = 0,
-  val voteCount: Int = 0
+//  val originalLanguage: String = "",
+//  val popularity: Double = 0.0,
+//  val releaseDate: String = "",
+//  val video: Boolean = false,
+//  val voteAverage: Int = 0,
+//  val voteCount: Int = 0
 )

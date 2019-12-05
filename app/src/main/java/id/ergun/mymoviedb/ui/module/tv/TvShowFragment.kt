@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Tv
+import id.ergun.mymoviedb.ui.module.utils.Const
 import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.android.synthetic.main.fragment_tv_show.rv_data
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,9 +20,22 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class TvShowFragment : Fragment() {
 
-  private val movieViewModel: TvShowViewModel by viewModel()
+    private val tvViewModel: TvShowViewModel by viewModel()
 
   lateinit var adapter: TvShowAdapter
+
+    companion object {
+
+        private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+
+        fun newInstance(favorite: Boolean = false): Fragment {
+            val fragment = TvShowFragment()
+            val argument = Bundle()
+            argument.putBoolean(ARGUMENT_FAVORITE, favorite)
+            fragment.arguments = argument
+            return fragment
+        }
+    }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -31,9 +45,16 @@ class TvShowFragment : Fragment() {
     return inflater.inflate(R.layout.fragment_tv_show, container, false)
   }
 
+    private fun loadArgument() {
+        if (arguments == null) return
+
+        tvViewModel.favorite = arguments!!.getBoolean(ARGUMENT_FAVORITE, false)
+    }
+
   @SuppressLint("SetTextI18n")
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
+      loadArgument()
 
     va_data.displayedChild = 0
 
@@ -44,19 +65,35 @@ class TvShowFragment : Fragment() {
     rvData.setHasFixedSize(true)
     rvData.adapter = adapter
 
-    movieViewModel.movies.observe(this,
+      tvViewModel.tvShows.observe(this,
       Observer<MutableList<Tv>> {
-        if (it != null) {
+          if (!it.isNullOrEmpty()) {
           adapter.tvShows = it
           adapter.notifyDataSetChanged()
-          va_data.displayedChild = 1
-        } else {
-          va_data.displayedChild = 2
-          tv_message.text = getString(R.string.menu_setting_change_language)
-        }
+          }
       }
-    )
-    movieViewModel.getMovies()
+      )
+
+      tvViewModel.status.observe(this, Observer<Const.DataModel.ErrorType> {
+          when (it) {
+              Const.DataModel.ErrorType.DATA_FOUND -> {
+                  va_data.displayedChild = 1
+              }
+              Const.DataModel.ErrorType.DATA_NOT_FOUND -> {
+                  va_data.displayedChild = 2
+                  tv_message.text = getString(R.string.message_data_not_found)
+              }
+              else -> {
+                  va_data.displayedChild = 2
+                  tv_message.text = getString(R.string.message_error_universal)
+              }
+          }
+      })
+      tvViewModel.loadTvShows()
   }
 
+    override fun onResume() {
+        super.onResume()
+        tvViewModel.loadTvShows()
+    }
 }

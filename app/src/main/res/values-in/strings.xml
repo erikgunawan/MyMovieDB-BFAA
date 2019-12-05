@@ -8,6 +8,10 @@
   <string name="movies">Film</string>
   <string name="tv_show">Acara TV</string>
 
-    <string name="message_error_universal">Terjadi kesalahan</string>
+  <string name="message_add_to_favorite">Ditambahkan ke Favorit</string>
+  <string name="message_remove_from_favorite">Dihapus dari Favorit</string>
+
+  <string name="message_error_universal">Terjadi kesalahan</string>
+  <string name="favorite">Favorit</string>
 
 </resources>

@@ -1,7 +1,7 @@
 package id.ergun.mymoviedb.data.remote
 
+import id.ergun.mymoviedb.BuildConfig.API_KEY_VALUE
 import id.ergun.mymoviedb.data.Const.API_KEY
-import id.ergun.mymoviedb.data.Const.API_KEY_VALUE
 import id.ergun.mymoviedb.data.Const.LANGUAGE
 import id.ergun.mymoviedb.data.Const.LANGUAGE_EN_US
 import id.ergun.mymoviedb.data.remote.model.MovieResponse

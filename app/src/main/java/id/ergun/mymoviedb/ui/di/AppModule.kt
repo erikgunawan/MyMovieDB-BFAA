@@ -1,5 +1,8 @@
 package id.ergun.mymoviedb.ui.di
 
+import androidx.room.Room
+import id.ergun.mymoviedb.data.Const
+import id.ergun.mymoviedb.data.local.db.AppDatabase
 import id.ergun.mymoviedb.data.remote.AppService
 import id.ergun.mymoviedb.data.remote.AppServiceFactory
 import id.ergun.mymoviedb.data.repository.movie.MovieRepository
@@ -26,9 +29,21 @@ val appModule = module {
         )
     }
 
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            AppDatabase::class.java,
+            Const.DB_NAME
+        ).build()
+    }
+
+    single { get<AppDatabase>().movieDao() }
+    single { get<AppDatabase>().tvDao() }
+
     factory<MovieRepository> {
         MovieRepositoryImpl(
             androidContext(),
+            get(),
             get()
         )
     }
@@ -36,6 +51,7 @@ val appModule = module {
     factory<TvShowRepository> {
         TvShowRepositoryImpl(
             androidContext(),
+            get(),
             get()
         )
     }

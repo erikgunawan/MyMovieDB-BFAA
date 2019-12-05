@@ -8,13 +8,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ActivityMovieDetailBinding
+import id.ergun.mymoviedb.ui.module.favorite.FavoriteModel
+import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.view_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -56,7 +60,7 @@ class MovieDetailActivity : AppCompatActivity() {
                     binding.tvTitle.text = it.title
 
                     Glide.with(this)
-                        .load(it.posterPath)
+                        .load(BuildConfig.IMAGE_URL + it.posterPath)
                         .apply(RequestOptions.centerInsideTransform())
                         .into(binding.ivPoster)
 
@@ -70,24 +74,50 @@ class MovieDetailActivity : AppCompatActivity() {
                 }
             }
         )
+
+        movieViewModel.favorite.observe(this,
+            Observer<Boolean> {
+                if (it == null) return@Observer
+                fab_favorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        if (it) R.drawable.ic_favorite else R.drawable.ic_favorite_unchecked
+                    )
+                )
+            })
+
+        movieViewModel.favoriteStatus.observe(this,
+            Observer<FavoriteModel.Type> {
+                Toast.makeText(
+                    this,
+                    if (it == FavoriteModel.Type.ADD_TO_FAVORITE) getString(R.string.message_add_to_favorite)
+                    else getString(R.string.message_remove_from_favorite),
+                    Toast.LENGTH_SHORT
+                ).show()
+            })
         movieViewModel.getData(movie!!)
         movieViewModel.getMovieDetail(movie.id.toString())
+        movieViewModel.getFavoriteMovie(movie.id.toString())
+
+        fab_favorite.setOnClickListener {
+            movieViewModel.updateFavorite()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
-          R.id.action_change_settings -> {
-            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
-            startActivity(mIntent)
-          }
+            R.id.action_change_settings -> {
+                val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+                startActivity(mIntent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
-  override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.menu_setting, menu)
-    return super.onCreateOptionsMenu(menu)
-  }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_setting, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
 }

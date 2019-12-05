@@ -5,11 +5,8 @@ package id.ergun.mymoviedb.data
  */
 object Const {
 
-    const val BASE_URL = "https://api.themoviedb.org"
-    const val IMAGE_URL = "https://image.tmdb.org/t/p/w185"
 
     const val API_KEY = "api_key"
-    const val API_KEY_VALUE = "ba278fb52b53db0c5229d58941e31b0a"
 
     const val DB_NAME = "my-moviedb"
 

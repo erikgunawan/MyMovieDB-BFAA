@@ -1,7 +1,7 @@
 package id.ergun.mymoviedb.data.remote
 
 import android.content.Context
-import id.ergun.mymoviedb.data.Const
+import id.ergun.mymoviedb.BuildConfig.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,7 +25,7 @@ class AppServiceFactory(
 
     private fun <T> createService(classx: Class<T>, okHttpClient: OkHttpClient): T {
         val retrofit = Retrofit.Builder()
-            .baseUrl(Const.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

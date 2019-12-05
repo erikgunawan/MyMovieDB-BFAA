@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
+import id.ergun.mymoviedb.ui.module.utils.Const
 import kotlinx.android.synthetic.main.fragment_movie.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,6 +23,18 @@ class MovieFragment : Fragment() {
 
   lateinit var adapter: MovieAdapter
 
+  companion object {
+
+    private const val ARGUMENT_FAVORITE = "ARGUMENT_FAVORITE"
+
+    fun newInstance(favorite: Boolean = false): Fragment {
+      val fragment = MovieFragment()
+      val argument = Bundle()
+      argument.putBoolean(ARGUMENT_FAVORITE, favorite)
+      fragment.arguments = argument
+      return fragment
+    }
+  }
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -30,9 +43,16 @@ class MovieFragment : Fragment() {
     return inflater.inflate(R.layout.fragment_movie, container, false)
   }
 
+  private fun loadArgument() {
+    if (arguments == null) return
+
+    movieViewModel.favorite = arguments!!.getBoolean(ARGUMENT_FAVORITE, false)
+  }
+
   @SuppressLint("SetTextI18n")
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
+    loadArgument()
 
     va_data.displayedChild = 0
 
@@ -44,18 +64,34 @@ class MovieFragment : Fragment() {
 
     movieViewModel.movies.observe(this,
       Observer<MutableList<Movie>> {
-        if (it != null) {
+        if (!it.isNullOrEmpty()) {
           adapter.movies = it
           adapter.notifyDataSetChanged()
-
-          va_data.displayedChild = 1
-        } else {
-          va_data.displayedChild = 2
-          tv_message.text = getString(R.string.menu_setting_change_language)
         }
       }
     )
-    movieViewModel.getMovies()
+
+    movieViewModel.status.observe(this, Observer<Const.DataModel.ErrorType> {
+      when (it) {
+        Const.DataModel.ErrorType.DATA_FOUND -> {
+          va_data.displayedChild = 1
+        }
+        Const.DataModel.ErrorType.DATA_NOT_FOUND -> {
+          va_data.displayedChild = 2
+          tv_message.text = getString(R.string.message_data_not_found)
+        }
+        else -> {
+          va_data.displayedChild = 2
+          tv_message.text = getString(R.string.message_error_universal)
+        }
+      }
+    })
+    movieViewModel.loadMovies()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    movieViewModel.loadMovies()
   }
 
 }

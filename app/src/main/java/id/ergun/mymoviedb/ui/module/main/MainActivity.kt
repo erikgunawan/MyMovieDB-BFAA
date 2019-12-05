@@ -7,18 +7,19 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.ui.module.favorite.FavoriteFragment
 import id.ergun.mymoviedb.ui.module.movie.MovieFragment
 import id.ergun.mymoviedb.ui.module.tv.TvShowFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_toolbar.*
 
+
 /**
  * Created by erikgunawan on 27/11/19.
  */
-class MainActivity : AppCompatActivity() {
-
-  lateinit var adapter: ViewPagerAdapter
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -30,20 +31,19 @@ class MainActivity : AppCompatActivity() {
       elevation = 0F
     }
 
-    val fragments = mutableListOf<Fragment>()
-    fragments.add(MovieFragment())
-    fragments.add(TvShowFragment())
+      loadFragment(MovieFragment())
 
-    val titles = mutableListOf<String>()
-    titles.add(getString(R.string.movies))
-    titles.add(getString(R.string.tv_show))
+      bnv_main.setOnNavigationItemSelectedListener(this)
+  }
 
-    adapter = ViewPagerAdapter(supportFragmentManager)
-    adapter.data = fragments
-    adapter.pageTitle = titles
-
-    viewPager.adapter = adapter
-    tabLayout.setupWithViewPager(viewPager)
+    private fun loadFragment(fragment: Fragment?): Boolean {
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.layout_container, fragment)
+                .commit()
+            return true
+        }
+        return false
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -58,4 +58,14 @@ class MainActivity : AppCompatActivity() {
     }
     return super.onOptionsItemSelected(item)
   }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var fragment: Fragment? = null
+        when (item.itemId) {
+            R.id.action_movies -> fragment = MovieFragment()
+            R.id.action_tv_show -> fragment = TvShowFragment()
+            R.id.action_favorite -> fragment = FavoriteFragment()
+        }
+        return loadFragment(fragment)
+    }
 }

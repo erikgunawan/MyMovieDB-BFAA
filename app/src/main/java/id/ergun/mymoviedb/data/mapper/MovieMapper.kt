@@ -1,6 +1,5 @@
 package id.ergun.mymoviedb.data.mapper
 
-import id.ergun.mymoviedb.data.Const
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.data.remote.model.MovieResponse
 
@@ -19,9 +18,28 @@ class MovieMapper {
         return Movie(
             id = movie.id,
             title = movie.title ?: "",
-            posterPath = Const.IMAGE_URL + movie.posterPath,
-            originalTitle = movie.originalTitle ?: "",
+            posterPath = movie.posterPath ?: "",
             overview = movie.overview ?: ""
+        )
+    }
+
+
+    fun fromLocal(movie: id.ergun.mymoviedb.data.local.model.Movie): Movie {
+        return Movie(
+            id = movie.id,
+            title = movie.title,
+            posterPath = movie.posterPath,
+            overview = movie.overview
+        )
+    }
+
+
+    fun toLocal(movie: Movie): id.ergun.mymoviedb.data.local.model.Movie {
+        return id.ergun.mymoviedb.data.local.model.Movie(
+            id = movie.id ?: 0,
+            title = movie.title,
+            posterPath = movie.posterPath,
+            overview = movie.overview
         )
     }
 }

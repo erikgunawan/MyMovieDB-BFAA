@@ -4,7 +4,7 @@ import androidx.room.*
 import id.ergun.mymoviedb.data.local.model.Movie
 
 /**
- * Created by alfacart on 03/12/19.
+ * Created by erikgunawan on 03/12/19.
  */
 @Dao
 interface MovieDao {
@@ -20,4 +20,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM Movie")
     fun getMovies(): MutableList<Movie>
+
+    @Query("SELECT * FROM Movie WHERE id==:id")
+    fun getMovie(id: String): Movie
 }

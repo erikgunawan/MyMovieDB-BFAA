@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ItemMovieBinding
@@ -26,14 +27,13 @@ class MovieAdapter(private val context: Context) : RecyclerView.Adapter<MovieAda
         holder.tvOverview.text = movie.overview
 
         Glide.with(holder.itemView.context)
-            .load(movie.posterPath)
+            .load(BuildConfig.IMAGE_URL + movie.posterPath)
             .apply(RequestOptions.centerInsideTransform())
             .into(holder.ivPoster)
 
         holder.btnDetail.setOnClickListener {
             when (context) {
-                is MainActivity,
-                is MovieActivity -> context.startActivity(
+                is MainActivity -> context.startActivity(
                     MovieDetailActivity.newIntent(
                         context,
                         movie

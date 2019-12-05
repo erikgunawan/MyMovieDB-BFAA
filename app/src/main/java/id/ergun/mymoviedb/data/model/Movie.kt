@@ -8,18 +8,18 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 class Movie(
-    val adult: Boolean = false,
-    val backdropPath: String = "",
-    val genreIds: List<Int>? = mutableListOf(),
     val id: Int? = null,
-    val originalLanguage: String = "",
-    val originalTitle: String = "",
     val overview: String = "",
-    val popularity: Double = 0.0,
     val posterPath: String = "",
-    val releaseDate: String = "",
-    val title: String = "",
-    val video: Boolean = false,
-    val voteAverage: Int = 0,
-    val voteCount: Int = 0
+    val title: String = ""
+//    val adult: Boolean = false,
+//    val backdropPath: String = "",
+//    val genreIds: List<Int>? = mutableListOf(),
+//    val originalLanguage: String = "",
+//    val originalTitle: String = "",
+//    val popularity: Double = 0.0,
+//    val releaseDate: String = "",
+//    val video: Boolean = false,
+//    val voteAverage: Int = 0,
+//    val voteCount: Int = 0
 ) : Parcelable
