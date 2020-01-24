@@ -5,6 +5,10 @@ package id.ergun.mymoviedb.ui.module.utils
  */
 object Const {
 
+    const val DEFAULT_PAGE = 1
+
+    const val DAILY_REMINDER_HOUR = 7
+    const val RELEASE_TODAY_REMINDER_HOUR = 8
 
     class DataModel {
         enum class ErrorType {

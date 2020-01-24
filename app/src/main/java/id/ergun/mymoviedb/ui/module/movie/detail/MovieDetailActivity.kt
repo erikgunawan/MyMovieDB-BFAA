@@ -18,6 +18,7 @@ import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ActivityMovieDetailBinding
 import id.ergun.mymoviedb.ui.module.favorite.FavoriteModel
+import id.ergun.mymoviedb.ui.module.favorite.stackWidget.FavoriteBannerWidget
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.view_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -101,6 +102,10 @@ class MovieDetailActivity : AppCompatActivity() {
 
         fab_favorite.setOnClickListener {
             movieViewModel.updateFavorite()
+
+            val i = Intent(this, FavoriteBannerWidget::class.java)
+            i.action = FavoriteBannerWidget.EXTRA_ITEM
+            sendBroadcast(i)
         }
     }
 

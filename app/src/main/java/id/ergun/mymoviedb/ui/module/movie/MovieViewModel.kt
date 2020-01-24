@@ -23,13 +23,19 @@ class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
 
     var status: MutableLiveData<Const.DataModel.ErrorType> = MutableLiveData()
 
+    var page: Int = Const.DEFAULT_PAGE
+
     fun loadMovies() {
         if (favorite) getFavoriteMovies() else getMovies()
     }
 
     private fun getMovies() {
         compositeDisposable.add(
-            repository.getMovies().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            repository.getMovies(
+                page,
+                "2019-12-26",
+                "2019-12-26"
+            ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .map { MovieMapper().fromRemote(it) }
                 .subscribe(
                     {

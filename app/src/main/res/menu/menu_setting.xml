@@ -6,4 +6,17 @@
       android:title="@string/menu.setting.change_language"
       app:showAsAction="never"
       app:iconTint="#FFFFFF" />
+    <item
+        android:id="@+id/action_search"
+        android:title="@string/menu.setting.search"
+        app:showAsAction="ifRoom"
+        app:iconTint="#FFFFFF"
+        android:icon="@drawable/ic_search" />
+    <item
+        android:id="@+id/action_reminder"
+        android:title="@string/menu.setting.reminder"
+        app:showAsAction="ifRoom"
+        app:iconTint="#FFFFFF"
+        android:icon="@drawable/ic_reminder" />
+
 </menu>

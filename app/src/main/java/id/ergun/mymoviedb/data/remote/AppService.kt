@@ -4,6 +4,7 @@ import id.ergun.mymoviedb.BuildConfig.API_KEY_VALUE
 import id.ergun.mymoviedb.data.Const.API_KEY
 import id.ergun.mymoviedb.data.Const.LANGUAGE
 import id.ergun.mymoviedb.data.Const.LANGUAGE_EN_US
+import id.ergun.mymoviedb.data.Const.QUERY
 import id.ergun.mymoviedb.data.remote.model.MovieResponse
 import id.ergun.mymoviedb.data.remote.model.TvResponse
 import io.reactivex.Observable
@@ -20,7 +21,8 @@ interface AppService {
     fun getMovies(
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
-        ) language: String = LANGUAGE_EN_US
+        ) language: String = LANGUAGE_EN_US, @Query("page") page: Int = 1, @Query("primary_release_date.gte") gte: String? = null,
+        @Query("primary_release_date.lte") lte: String? = null
     ): Observable<MovieResponse>
 
     @GET("3/movie/{id}")
@@ -29,6 +31,14 @@ interface AppService {
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
         ) language: String = LANGUAGE_EN_US
+    ): Observable<MovieResponse.Result>
+
+
+    @GET("3/search/movie")
+    fun searchMovie(
+        @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
+            LANGUAGE
+        ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String
     ): Observable<MovieResponse.Result>
 
     @GET("3/discover/tv")
@@ -45,4 +55,12 @@ interface AppService {
             LANGUAGE
         ) language: String = LANGUAGE_EN_US
     ): Observable<TvResponse.Result>
+
+    @GET("3/search/tv")
+    fun searchTvShow(
+        @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
+            LANGUAGE
+        ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String
+    ): Observable<MovieResponse.Result>
+
 }

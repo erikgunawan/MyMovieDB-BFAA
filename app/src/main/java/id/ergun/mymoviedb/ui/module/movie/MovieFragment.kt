@@ -49,6 +49,25 @@ class MovieFragment : Fragment() {
     movieViewModel.favorite = arguments!!.getBoolean(ARGUMENT_FAVORITE, false)
   }
 
+    private fun setupScrollListener() {
+        val layoutManager = rv_data.layoutManager as LinearLayoutManager
+        rv_data.addOnScrollListener(object :
+            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(
+                recyclerView: androidx.recyclerview.widget.RecyclerView,
+                dx: Int,
+                dy: Int
+            ) {
+                super.onScrolled(recyclerView, dx, dy)
+                val totalItemCount = layoutManager.itemCount
+                val visibleItemCount = layoutManager.childCount
+                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+//        viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
+            }
+        })
+    }
+
   @SuppressLint("SetTextI18n")
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
@@ -61,6 +80,9 @@ class MovieFragment : Fragment() {
     rv_data.layoutManager = LinearLayoutManager(context!!)
     rv_data.setHasFixedSize(true)
     rv_data.adapter = adapter
+      setupScrollListener()
+
+//    rv_data.addOnScrollListener()
 
     movieViewModel.movies.observe(this,
       Observer<MutableList<Movie>> {

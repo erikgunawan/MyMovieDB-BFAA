@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/view_toolbar"
+            layout="@layout/view_toolbar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/view_toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/view_release_today_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_release_today_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Release Today Reminder"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/switch_release_today" />
+
+                <TextView
+                    android:id="@+id/tv_release_today_desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Notifikasi "
+                    app:layout_constraintTop_toBottomOf="@id/tv_release_today_label"
+                    app:layout_constraintStart_toStartOf="@id/tv_release_today_label"
+                    app:layout_constraintEnd_toEndOf="@id/tv_release_today_label" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_release_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_release_today_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/view_daily_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/view_release_today_reminder">
+
+                <TextView
+                    android:id="@+id/tv_daily_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Daily Reminder"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/switch_daily" />
+
+                <TextView
+                    android:id="@+id/tv_daily_desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Notifikasi "
+                    app:layout_constraintTop_toBottomOf="@id/tv_daily_label"
+                    app:layout_constraintStart_toStartOf="@id/tv_daily_label"
+                    app:layout_constraintEnd_toEndOf="@id/tv_daily_label" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_daily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_daily_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -2,6 +2,8 @@
   <string name="app_name">My MovieDB</string>
 
   <string name="menu.setting.change_language">Change Language Settings</string>
+  <string name="menu.setting.search">Search</string>
+  <string name="menu.setting.reminder">Reminder</string>
 
   <string name="language_param">en-US</string>
 
