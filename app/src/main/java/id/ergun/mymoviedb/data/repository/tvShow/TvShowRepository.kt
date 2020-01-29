@@ -15,4 +15,5 @@ interface TvShowRepository {
     fun getFavoriteTvShow(id: String): Observable<Tv>
     fun addToFavorite(tv: Tv): Single<Unit>
     fun removeFromFavorite(tv: Tv): Single<Unit>
+    fun getSearchTvShow(keyword: String): Observable<TvResponse.Result>
 }

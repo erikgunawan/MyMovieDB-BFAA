@@ -1,7 +1,6 @@
 package id.ergun.mymoviedb.data.repository.reminder
 
 import id.ergun.mymoviedb.data.local.cache.ReminderCache
-import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -20,11 +19,11 @@ class ReminderRepositoryImpl(
         return Single.fromCallable { data.setReleaseTodayReminder(active) }
     }
 
-    override fun isActiveDailyReminder(): Observable<Boolean> {
-        return Observable.just(data.isActiveDailyReminder())
+    override fun isActiveDailyReminder(): Boolean {
+        return data.isActiveDailyReminder()
     }
 
-    override fun isActiveReleaseTodayReminder(): Observable<Boolean> {
-        return Observable.just(data.isActiveReleaseTodayReminder())
+    override fun isActiveReleaseTodayReminder(): Boolean {
+        return data.isActiveReleaseTodayReminder()
     }
 }

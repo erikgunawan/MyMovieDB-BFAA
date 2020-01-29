@@ -22,7 +22,7 @@ class TvShowFragment : Fragment() {
 
     private val tvViewModel: TvShowViewModel by viewModel()
 
-  lateinit var adapter: TvShowAdapter
+    lateinit var adapter: TvShowAdapter
 
     companion object {
 
@@ -37,13 +37,13 @@ class TvShowFragment : Fragment() {
         }
     }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.fragment_tv_show, container, false)
-  }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_tv_show, container, false)
+    }
 
     private fun loadArgument() {
         if (arguments == null) return
@@ -51,46 +51,46 @@ class TvShowFragment : Fragment() {
         tvViewModel.favorite = arguments!!.getBoolean(ARGUMENT_FAVORITE, false)
     }
 
-  @SuppressLint("SetTextI18n")
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
-      loadArgument()
+    @SuppressLint("SetTextI18n")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        loadArgument()
 
-    va_data.displayedChild = 0
+        va_data.displayedChild = 0
 
-    adapter = TvShowAdapter(context!!)
+        adapter = TvShowAdapter(context!!)
 
-    val rvData = rv_data
-    rvData.layoutManager = LinearLayoutManager(context!!)
-    rvData.setHasFixedSize(true)
-    rvData.adapter = adapter
+        val rvData = rv_data
+        rvData.layoutManager = LinearLayoutManager(context!!)
+        rvData.setHasFixedSize(true)
+        rvData.adapter = adapter
 
-      tvViewModel.tvShows.observe(this,
-      Observer<MutableList<Tv>> {
-          if (!it.isNullOrEmpty()) {
-          adapter.tvShows = it
-          adapter.notifyDataSetChanged()
-          }
-      }
-      )
+        tvViewModel.tvShows.observe(this,
+            Observer<MutableList<Tv>> {
+                if (!it.isNullOrEmpty()) {
+                    adapter.tvShows = it
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        )
 
-      tvViewModel.status.observe(this, Observer<Const.DataModel.ErrorType> {
-          when (it) {
-              Const.DataModel.ErrorType.DATA_FOUND -> {
-                  va_data.displayedChild = 1
-              }
-              Const.DataModel.ErrorType.DATA_NOT_FOUND -> {
-                  va_data.displayedChild = 2
-                  tv_message.text = getString(R.string.message_data_not_found)
-              }
-              else -> {
-                  va_data.displayedChild = 2
-                  tv_message.text = getString(R.string.message_error_universal)
-              }
-          }
-      })
-      tvViewModel.loadTvShows()
-  }
+        tvViewModel.status.observe(this, Observer<Const.DataModel.ErrorType> {
+            when (it) {
+                Const.DataModel.ErrorType.DATA_FOUND -> {
+                    va_data.displayedChild = 1
+                }
+                Const.DataModel.ErrorType.DATA_NOT_FOUND -> {
+                    va_data.displayedChild = 2
+                    tv_message.text = getString(R.string.message_data_not_found)
+                }
+                else -> {
+                    va_data.displayedChild = 2
+                    tv_message.text = getString(R.string.message_error_universal)
+                }
+            }
+        })
+        tvViewModel.loadTvShows()
+    }
 
     override fun onResume() {
         super.onResume()

@@ -6,6 +6,7 @@ import id.ergun.mymoviedb.data.dataSource.movie.MovieDataSource
 import id.ergun.mymoviedb.data.dataSource.movie.MovieDataSourceImpl
 import id.ergun.mymoviedb.data.local.cache.ReminderCache
 import id.ergun.mymoviedb.data.local.db.AppDatabase
+import id.ergun.mymoviedb.data.pageDataSource.movie.MoviePageDataSourceFactory
 import id.ergun.mymoviedb.data.remote.AppService
 import id.ergun.mymoviedb.data.remote.AppServiceFactory
 import id.ergun.mymoviedb.data.repository.movie.MovieRepository
@@ -16,6 +17,7 @@ import id.ergun.mymoviedb.data.repository.tvShow.TvShowRepository
 import id.ergun.mymoviedb.data.repository.tvShow.TvShowRepositoryImpl
 import id.ergun.mymoviedb.ui.module.movie.MovieViewModel
 import id.ergun.mymoviedb.ui.module.movie.detail.MovieDetailViewModel
+import id.ergun.mymoviedb.ui.module.movie.search.MovieSearchViewModel
 import id.ergun.mymoviedb.ui.module.reminder.ReminderViewModel
 import id.ergun.mymoviedb.ui.module.tv.TvShowViewModel
 import id.ergun.mymoviedb.ui.module.tv.detail.TvShowDetailViewModel
@@ -70,11 +72,15 @@ val appModule = module {
         ReminderRepositoryImpl(get())
     }
 
+    factory { MoviePageDataSourceFactory(get(), get()) }
+
     viewModel { TvShowViewModel(get()) }
     viewModel { TvShowDetailViewModel(get()) }
 
-    viewModel { MovieViewModel(get()) }
+    viewModel { MovieViewModel(get(), get()) }
     viewModel { MovieDetailViewModel(get()) }
 
     viewModel { ReminderViewModel(get()) }
+
+    viewModel { MovieSearchViewModel(get(), get()) }
 }

@@ -9,6 +9,7 @@ import id.ergun.mymoviedb.ui.module.utils.Const
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 /**
  * Created by erikgunawan on 27/11/19.
@@ -22,6 +23,8 @@ class TvShowViewModel(private val repository: TvShowRepository) : ViewModel() {
     var tvShows: MutableLiveData<MutableList<Tv>> = MutableLiveData()
 
     var status: MutableLiveData<Const.DataModel.ErrorType> = MutableLiveData()
+
+    val calendar = Calendar.getInstance()
 
     fun loadTvShows() {
         if (favorite) getFavoriteTvShows() else getTvShows()

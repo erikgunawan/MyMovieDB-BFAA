@@ -15,4 +15,5 @@ interface MovieRepository {
     fun getFavoriteMovie(id: String): Observable<Movie>
     fun addToFavorite(movie: Movie): Single<Unit>
     fun removeFromFavorite(movie: Movie): Single<Unit>
+    fun searchMovie(keyword: String): Observable<MovieResponse>
 }

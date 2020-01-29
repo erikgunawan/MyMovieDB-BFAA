@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import id.ergun.mymoviedb.ui.module.utils.Const.DAILY_REMINDER_HOUR
-import id.ergun.mymoviedb.ui.module.utils.Const.RELEASE_TODAY_REMINDER_HOUR
 import id.ergun.mymoviedb.ui.notification.ReminderService.Companion.REPLY_ACTION
 import java.util.*
 
@@ -60,7 +59,8 @@ class ReminderReceiver : BroadcastReceiver() {
         cancelAlarm(context)
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val calendar = Calendar.getInstance()
-        calendar[Calendar.HOUR_OF_DAY] = RELEASE_TODAY_REMINDER_HOUR
+        calendar[Calendar.HOUR_OF_DAY] = 11//RELEASE_TODAY_REMINDER_HOUR
+        calendar[Calendar.MINUTE] = 25
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,

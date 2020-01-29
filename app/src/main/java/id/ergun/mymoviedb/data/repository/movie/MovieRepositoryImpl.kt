@@ -50,4 +50,8 @@ class MovieRepositoryImpl(
             localData.deleteMovie(MovieMapper().toLocal(movie))
         }
     }
+
+    override fun searchMovie(keyword: String): Observable<MovieResponse> {
+        return remoteData.searchMovie(keyword)
+    }
 }

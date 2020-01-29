@@ -29,7 +29,7 @@ class MoviePageDataSourceFactory(
     }
 
     companion object {
-        private const val PAGE_SIZE = 10
+        private const val PAGE_SIZE = 5
 
         fun pagedListConfig() = PagedList.Config.Builder()
             .setInitialLoadSizeHint(PAGE_SIZE)

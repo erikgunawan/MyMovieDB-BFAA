@@ -28,7 +28,7 @@
                     android:id="@+id/tv_release_today_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Release Today Reminder"
+                    android:text="@string/reminder.release_today.label"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/switch_release_today" />
@@ -37,7 +37,7 @@
                     android:id="@+id/tv_release_today_desc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Notifikasi "
+                    android:text="@string/reminder.release_today.desc"
                     app:layout_constraintTop_toBottomOf="@id/tv_release_today_label"
                     app:layout_constraintStart_toStartOf="@id/tv_release_today_label"
                     app:layout_constraintEnd_toEndOf="@id/tv_release_today_label" />
@@ -65,7 +65,7 @@
                     android:id="@+id/tv_daily_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Daily Reminder"
+                    android:text="@string/reminder.daily.label"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/switch_daily" />
@@ -74,7 +74,7 @@
                     android:id="@+id/tv_daily_desc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Notifikasi "
+                    android:text="@string/reminder.daily.desc"
                     app:layout_constraintTop_toBottomOf="@id/tv_daily_label"
                     app:layout_constraintStart_toStartOf="@id/tv_daily_label"
                     app:layout_constraintEnd_toEndOf="@id/tv_daily_label" />

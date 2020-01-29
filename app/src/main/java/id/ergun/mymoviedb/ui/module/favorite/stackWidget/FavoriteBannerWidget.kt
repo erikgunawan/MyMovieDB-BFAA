@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.net.toUri
@@ -34,6 +35,8 @@ class FavoriteBannerWidget : AppWidgetProvider() {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
 
+            Log.d("intentedata", intent.data.toString())
+
             val views = RemoteViews(context.packageName, R.layout.widget_favorite)
             views.setRemoteAdapter(R.id.stack_view, intent)
             views.setEmptyView(R.id.stack_view, R.id.empty_view)
@@ -41,7 +44,7 @@ class FavoriteBannerWidget : AppWidgetProvider() {
             val toastIntent = Intent(context, FavoriteBannerWidget::class.java)
             toastIntent.action = TOAST_ACTION
             toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
+//            intent.data = intent.toUri(Intent.URI_INTENT_SCHEME).toUri()
             val toastPendingIntent = PendingIntent.getBroadcast(
                 context,
                 0,
@@ -76,6 +79,12 @@ class FavoriteBannerWidget : AppWidgetProvider() {
             if (intent.action == TOAST_ACTION) {
                 val viewIndex = intent.getIntExtra(EXTRA_ITEM, 0)
                 Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
+                context.startActivity(
+                    id.ergun.mymoviedb.ui.module.main.MainActivity.newIntent(
+                        context
+                    )
+                )
+
             }
         }
         if (intent.action == EXTRA_ITEM) {

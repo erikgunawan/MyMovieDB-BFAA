@@ -50,6 +50,7 @@ class MoviePageDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
         updateState(Const.State.LOADING)
+        remoteData.getMovies(params.key, "", "")
 //        compositeDisposable.add(
 //            repository.getMovies(params.key)
 //                .subscribe(
@@ -68,6 +69,7 @@ class MoviePageDataSource(
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+        remoteData.getMovies(params.key, "", "")
     }
 
     private fun updateState(state: Const.State) {

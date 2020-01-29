@@ -1,6 +1,7 @@
 package id.ergun.mymoviedb.data.remote
 
 import android.content.Context
+import com.readystatesoftware.chuck.ChuckInterceptor
 import id.ergun.mymoviedb.BuildConfig.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,6 +37,7 @@ class AppServiceFactory(
     private fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(ChuckInterceptor(context))
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()

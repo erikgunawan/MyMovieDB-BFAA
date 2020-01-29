@@ -7,29 +7,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
-import com.google.gson.Gson
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
 import id.ergun.mymoviedb.databinding.ActivityReminderBinding
 import id.ergun.mymoviedb.ui.module.main.MainActivity
 import id.ergun.mymoviedb.ui.module.movie.MovieViewModel
-import id.ergun.mymoviedb.ui.notification.ReleaseTodayWorker
 import id.ergun.mymoviedb.ui.notification.ReminderReceiver
-import id.ergun.mymoviedb.ui.notification.ReminderWork
 import kotlinx.android.synthetic.main.activity_reminder.*
 import kotlinx.android.synthetic.main.view_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by alfacart on 27/12/19.
@@ -65,15 +57,10 @@ class ReminderActivity : AppCompatActivity() {
         }
 
         switch_daily.setOnClickListener {
-            Log.d("checkedCahnge", true.toString())
             reminderViewModel.setDailyReminder(switch_daily.isChecked)
         }
 
         switch_release_today.setOnClickListener {
-            Log.d("checkedCahnge", true.toString())
-            if (!switch_release_today.isChecked) {
-                WorkManager.getInstance(this).cancelAllWork()
-            }
             reminderViewModel.setReleaseTodayReminder(switch_release_today.isChecked)
         }
 
@@ -84,32 +71,8 @@ class ReminderActivity : AppCompatActivity() {
                 switch_daily.isChecked = it
 
                 if (reminderViewModel.isActiveDailyReminderChange) {
-                    if (it) {
+                    if (it)
                         ReminderReceiver().setDailyReminderAlarm(this)
-//                    ReminderUtils.setReminder(mNotificationTime, this)
-                        val currentDate = Calendar.getInstance()
-                        val dueDate = Calendar.getInstance()    // Set Execution around 05:00:00 AM
-                        dueDate.set(Calendar.HOUR_OF_DAY, 13)
-                        dueDate.set(Calendar.MINUTE, 50)
-                        dueDate.set(Calendar.SECOND, 0)
-                        if (dueDate.before(currentDate)) {
-                            dueDate.add(Calendar.HOUR_OF_DAY, 24)
-                        }
-                        val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
-                        val dailyWorkRequest = OneTimeWorkRequest.Builder(ReminderWork::class.java)
-                            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-                            .addTag("reminder")
-                            .build()
-
-                        WorkManager.getInstance(this)
-                            .enqueue(dailyWorkRequest)
-
-//                    val instanceWorkManager = WorkManager.getInstance(this)
-//                    instanceWorkManager.beginUniqueWork(NOTIFICATION_WORK,
-//                        ExistingWorkPolicy.REPLACE, notificationWork).enqueue()
-                    } else {
-                        WorkManager.getInstance(this).cancelAllWorkByTag("daily-reminder")
-                    }
                 }
             }
         )
@@ -118,41 +81,8 @@ class ReminderActivity : AppCompatActivity() {
             Observer<Boolean> {
                 switch_release_today.isChecked = it
                 if (reminderViewModel.isActiveReleaseTodayReminderChange) {
-                    if (it) {
-//                    updateNotification(0)
-                        notifyId++
-
+                    if (it)
                         ReminderReceiver().setReleaseTodayReminderAlarm(this)
-
-                        val currentDate = Calendar.getInstance()
-                        val dueDate = Calendar.getInstance()
-                        dueDate.set(Calendar.HOUR_OF_DAY, 16)
-                        dueDate.set(Calendar.MINUTE, 38)
-                        dueDate.set(Calendar.SECOND, 0)
-                        if (dueDate.before(currentDate)) {
-                            dueDate.add(Calendar.HOUR_OF_DAY, 24)
-                        }
-                        val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
-                        val dailyWorkRequest =
-                            OneTimeWorkRequest.Builder(ReleaseTodayWorker::class.java)
-                                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-                                .addTag("release-today-reminder")
-                                .build()
-
-                        WorkManager.getInstance(this)
-                            .enqueue(dailyWorkRequest)
-
-                        WorkManager.getInstance(this).getWorkInfoByIdLiveData(dailyWorkRequest.id)
-                            .observe(this, Observer { it ->
-
-                                Log.d("gsonwork", Gson().toJson(it))
-                                if (it.state == WorkInfo.State.SUCCEEDED) {
-                                    movieViewModel.loadMovies()
-                                }
-                            })
-                    } else {
-                        WorkManager.getInstance(this).cancelAllWorkByTag("release-today-reminder")
-                    }
                 }
             }
         )

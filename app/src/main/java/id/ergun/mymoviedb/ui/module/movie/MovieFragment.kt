@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.ergun.mymoviedb.R
 import id.ergun.mymoviedb.data.model.Movie
@@ -49,24 +50,37 @@ class MovieFragment : Fragment() {
     movieViewModel.favorite = arguments!!.getBoolean(ARGUMENT_FAVORITE, false)
   }
 
-    private fun setupScrollListener() {
-        val layoutManager = rv_data.layoutManager as LinearLayoutManager
-        rv_data.addOnScrollListener(object :
-            androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
-            override fun onScrolled(
-                recyclerView: androidx.recyclerview.widget.RecyclerView,
-                dx: Int,
-                dy: Int
-            ) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = layoutManager.itemCount
-                val visibleItemCount = layoutManager.childCount
-                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+  private fun setupScrollListener() {
+    val layoutManager = rv_data.layoutManager as LinearLayoutManager
+    rv_data.addOnScrollListener(object :
+      androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+      override fun onScrolled(
+        recyclerView: androidx.recyclerview.widget.RecyclerView,
+        dx: Int,
+        dy: Int
+      ) {
+        val xx = recyclerView.computeVerticalScrollRange()
+        val xy = recyclerView.computeVerticalScrollOffset()
+        val xz = recyclerView.computeVerticalScrollExtent()
+        val zz = (xy.toFloat() / (xx - xz).toFloat() * 100).toInt()
 
-//        viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
-            }
-        })
-    }
+//              if (zz >= 100 && !isLoadingData) {
+        if (zz >= 100) {
+//                isLoadingData = true
+          movieViewModel.loadMovies()
+        }
+        super.onScrolled(recyclerView, dx, dy)
+      }
+//                val totalItemCount = layoutManager.itemCount
+//                val visibleItemCount = layoutManager.childCount
+//                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+//
+//              if (recyclerView.size)
+//              movieViewModel.loadMovies()
+////        viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
+//            }
+    })
+  }
 
   @SuppressLint("SetTextI18n")
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -80,7 +94,7 @@ class MovieFragment : Fragment() {
     rv_data.layoutManager = LinearLayoutManager(context!!)
     rv_data.setHasFixedSize(true)
     rv_data.adapter = adapter
-      setupScrollListener()
+//    setupScrollListener()
 
 //    rv_data.addOnScrollListener()
 
@@ -97,6 +111,7 @@ class MovieFragment : Fragment() {
       when (it) {
         Const.DataModel.ErrorType.DATA_FOUND -> {
           va_data.displayedChild = 1
+          movieViewModel.page++
         }
         Const.DataModel.ErrorType.DATA_NOT_FOUND -> {
           va_data.displayedChild = 2
@@ -108,12 +123,13 @@ class MovieFragment : Fragment() {
         }
       }
     })
-    movieViewModel.loadMovies()
-  }
 
-  override fun onResume() {
-    super.onResume()
-    movieViewModel.loadMovies()
+    movieViewModel.newsList.observe(this, Observer<PagedList<Movie>> { items ->
+      adapter.movies = items
+      adapter.notifyDataSetChanged()
+    })
+
+//    movieViewModel.loadMovies()
   }
 
 }

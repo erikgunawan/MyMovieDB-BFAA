@@ -39,7 +39,7 @@ interface AppService {
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
         ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String
-    ): Observable<MovieResponse.Result>
+    ): Observable<MovieResponse>
 
     @GET("3/discover/tv")
     fun getTvShows(
@@ -61,6 +61,6 @@ interface AppService {
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
         ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String
-    ): Observable<MovieResponse.Result>
+    ): Observable<TvResponse.Result>
 
 }

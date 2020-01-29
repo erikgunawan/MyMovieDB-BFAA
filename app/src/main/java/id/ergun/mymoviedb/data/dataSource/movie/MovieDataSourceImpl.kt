@@ -30,4 +30,11 @@ class MovieDataSourceImpl(
             id = id
         )
     }
+
+    override fun searchMovie(keyword: String): Observable<MovieResponse> {
+        return remoteData.searchMovie(
+            language = context.getString(R.string.language_param),
+            query = keyword
+        )
+    }
 }

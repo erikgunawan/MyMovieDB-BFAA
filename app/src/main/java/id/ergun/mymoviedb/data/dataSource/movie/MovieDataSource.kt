@@ -9,4 +9,5 @@ import io.reactivex.Observable
 interface MovieDataSource {
     fun getMovies(page: Int, gte: String?, lte: String?): Observable<MovieResponse>
     fun getMovieDetail(id: String): Observable<MovieResponse.Result>
+    fun searchMovie(keyword: String): Observable<MovieResponse>
 }

@@ -54,4 +54,11 @@ class TvShowRepositoryImpl(
             localData.deleteTvShow(TvShowMapper().toLocal(tv))
         }
     }
+
+    override fun getSearchTvShow(keyword: String): Observable<TvResponse.Result> {
+        return remoteData.searchTvShow(
+            language = context.getString(R.string.language_param),
+            query = keyword
+        )
+    }
 }

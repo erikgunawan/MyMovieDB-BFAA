@@ -11,7 +11,12 @@
   <string name="tv_show">TV Show</string>
   <string name="favorite">Favorite</string>
 
-  <string name="message_add_to_favorite">Added to Favorite</string>
+    <string name="reminder.release_today.label">Release Today Reminder</string>
+    <string name="reminder.release_today.desc">Reminder will be active at 07.00 AM</string>
+    <string name="reminder.daily.label">Daily Reminder</string>
+    <string name="reminder.daily.desc">Reminder will be active at 08.00 AM</string>
+
+    <string name="message_add_to_favorite">Added to Favorite</string>
   <string name="message_remove_from_favorite">Removed from Favorite</string>
 
   <string name="message_data_not_found">Data not found</string>

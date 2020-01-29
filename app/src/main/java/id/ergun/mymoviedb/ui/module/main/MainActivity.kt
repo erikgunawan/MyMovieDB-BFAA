@@ -1,5 +1,6 @@
 package id.ergun.mymoviedb.ui.module.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -23,20 +24,35 @@ import kotlinx.android.synthetic.main.view_toolbar.*
  */
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    companion object {
 
-    setSupportActionBar(toolbar)
-    supportActionBar?.run {
-      title = getString(R.string.app_name)
-      elevation = 0F
+        fun newIntent(context: Context): Intent {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            return intent
+        }
+
+        fun newIntentToFavorite(context: Context, id: String, type: Int): Intent {
+            val intent = newIntent(context)
+            intent.putExtra("id", id)
+            return intent
+        }
     }
 
-      loadFragment(MovieFragment())
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-      bnv_main.setOnNavigationItemSelectedListener(this)
-  }
+        setSupportActionBar(toolbar)
+        supportActionBar?.run {
+            title = getString(R.string.app_name)
+            elevation = 0F
+        }
+
+        loadFragment(MovieFragment())
+
+        bnv_main.setOnNavigationItemSelectedListener(this)
+    }
 
     private fun loadFragment(fragment: Fragment?): Boolean {
         if (fragment != null) {
@@ -46,10 +62,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             return true
         }
         return false
-  }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-    menuInflater.inflate(R.menu.menu_setting, menu)
+        menuInflater.inflate(R.menu.menu_setting, menu)
         // Retrieve the SearchView and plug it into SearchManager
 //      val search = menu!!.findItem(R.id.action_search)
 ////      val searchView: SearchView = search.actionView as SearchView
@@ -61,28 +77,28 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 //      searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         return super.onCreateOptionsMenu(menu)
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      when (item.itemId) {
-          R.id.action_change_settings -> {
-              val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
-              startActivity(mIntent)
-          }
-          R.id.action_search -> {
-              startActivity(
-                  Intent(
-                      this,
-                      MovieSearchActivity::class.java
-                  ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-              )
-          }
-          R.id.action_reminder -> {
-              startActivity(ReminderActivity.newIntent(this))
-          }
     }
-    return super.onOptionsItemSelected(item)
-  }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_change_settings -> {
+                val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+                startActivity(mIntent)
+            }
+            R.id.action_search -> {
+                startActivity(
+                    Intent(
+                        this,
+                        MovieSearchActivity::class.java
+                    ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                )
+            }
+            R.id.action_reminder -> {
+                startActivity(ReminderActivity.newIntent(this))
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragment: Fragment? = null

@@ -27,39 +27,11 @@ class ReminderViewModel(private val repository: ReminderRepository) : ViewModel(
     }
 
     private fun getDailyReminder() {
-        compositeDisposable.add(
-            repository.isActiveDailyReminder().subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            )
-                .subscribe(
-                    {
-                        isActiveDailyReminderChange = false
-                        isActiveDailyReminder.value = it
-                    },
-                    {
-                        isActiveDailyReminderChange = false
-                        isActiveDailyReminder.value = false
-                    }
-                )
-        )
+        isActiveDailyReminder.value = repository.isActiveDailyReminder()
     }
 
     private fun getReleaseTodayReminder() {
-        compositeDisposable.add(
-            repository.isActiveReleaseTodayReminder().subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            )
-                .subscribe(
-                    {
-                        isActiveReleaseTodayReminderChange = false
-                        isActiveReleaseTodayReminder.value = it
-                    },
-                    {
-                        isActiveReleaseTodayReminderChange = false
-                        isActiveReleaseTodayReminder.value = false
-                    }
-                )
-        )
+        isActiveReleaseTodayReminder.value = repository.isActiveReleaseTodayReminder()
     }
 
     fun setDailyReminder(active: Boolean) {
