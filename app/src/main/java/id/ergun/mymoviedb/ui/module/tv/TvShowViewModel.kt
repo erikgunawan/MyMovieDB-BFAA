@@ -1,72 +1,49 @@
 package id.ergun.mymoviedb.ui.module.tv
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import id.ergun.mymoviedb.data.mapper.TvShowMapper
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import id.ergun.mymoviedb.data.model.Tv
+import id.ergun.mymoviedb.data.pageDataSource.tvShow.TvShowPageDataSource
+import id.ergun.mymoviedb.data.pageDataSource.tvShow.TvShowPageDataSourceFactory
 import id.ergun.mymoviedb.data.repository.tvShow.TvShowRepository
 import id.ergun.mymoviedb.ui.module.utils.Const
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 /**
  * Created by erikgunawan on 27/11/19.
  */
-class TvShowViewModel(private val repository: TvShowRepository) : ViewModel() {
-
-  private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+class TvShowViewModel(
+    private val repository: TvShowRepository,
+    private val factory: TvShowPageDataSourceFactory
+) : ViewModel() {
 
     var favorite = false
 
-    var tvShows: MutableLiveData<MutableList<Tv>> = MutableLiveData()
+    var tvShows: LiveData<PagedList<Tv>> =
+        LivePagedListBuilder(factory, TvShowPageDataSourceFactory.pagedListConfig()).build()
+
+    var tvShowState: LiveData<id.ergun.mymoviedb.data.Const.State> =
+        Transformations.switchMap<TvShowPageDataSource, id.ergun.mymoviedb.data.Const.State>(
+            factory.liveData,
+            TvShowPageDataSource::state
+        )
 
     var status: MutableLiveData<Const.DataModel.ErrorType> = MutableLiveData()
 
-    val calendar = Calendar.getInstance()
-
-    fun loadTvShows() {
-        if (favorite) getFavoriteTvShows() else getTvShows()
+    fun start() {
+        checkFavorite(favorite)
     }
 
-    private fun getTvShows() {
-    compositeDisposable.add(
-        repository.getTvShows().subscribeOn(Schedulers.io()).observeOn(
-            AndroidSchedulers.mainThread()
-        )
-            .map { TvShowMapper().fromRemote(it) }
-            .subscribe(
-                {
-                    if (it.isNullOrEmpty()) status.value = Const.DataModel.ErrorType.DATA_NOT_FOUND
-                    else status.value = Const.DataModel.ErrorType.DATA_FOUND
-
-                    tvShows.value = it
-                },
-                {
-                    tvShows.value = mutableListOf()
-                    status.value = Const.DataModel.ErrorType.EXCEPTION
-                }
-            )
-    )
+    private fun checkFavorite(favorite: Boolean) {
+        factory.favorite = favorite
     }
 
-    private fun getFavoriteTvShows() {
-        compositeDisposable.add(
-            repository.getFavoriteTvShows().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        if (it.isNullOrEmpty()) status.value =
-                            Const.DataModel.ErrorType.DATA_NOT_FOUND
-                        else status.value = Const.DataModel.ErrorType.DATA_FOUND
+    var keyword: String = ""
 
-                        tvShows.value = it
-                    },
-                    {
-                        tvShows.value = mutableListOf()
-                        status.value = Const.DataModel.ErrorType.EXCEPTION
-                    }
-                )
-        )
+    fun refresh() {
+        factory.liveData.value?.invalidate()
     }
 }

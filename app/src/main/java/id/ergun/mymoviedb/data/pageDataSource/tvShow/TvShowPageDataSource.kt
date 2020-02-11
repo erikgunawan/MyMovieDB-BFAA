@@ -1,26 +1,27 @@
-package id.ergun.mymoviedb.data.pageDataSource.movie
+package id.ergun.mymoviedb.data.pageDataSource.tvShow
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import id.ergun.mymoviedb.data.Const
-import id.ergun.mymoviedb.data.dataSource.movie.MovieDataSource
-import id.ergun.mymoviedb.data.local.dao.MovieDao
-import id.ergun.mymoviedb.data.mapper.MovieMapper
-import id.ergun.mymoviedb.data.model.Movie
+import id.ergun.mymoviedb.data.dataSource.tvShow.TvShowDataSource
+import id.ergun.mymoviedb.data.local.dao.TvDao
+import id.ergun.mymoviedb.data.mapper.TvShowMapper
+import id.ergun.mymoviedb.data.model.Tv
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
-import java.util.*
 
 /**
- * Created by alfacart on 31/12/19.
+ * Created by alfacart on 03/02/20.
  */
 
-class MoviePageDataSource(
-    private val remoteData: MovieDataSource,
-    private val localData: MovieDao
-) : PageKeyedDataSource<Int, Movie>() {
+class TvShowPageDataSource(
+    private val remoteData: TvShowDataSource,
+    private val localData: TvDao
+) : PageKeyedDataSource<Int, Tv>() {
+
+    var favorite: Boolean = false
 
     var state: MutableLiveData<Const.State> = MutableLiveData()
 
@@ -28,13 +29,9 @@ class MoviePageDataSource(
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    var calendar: Calendar = Calendar.getInstance()
-
-    var favorite: Boolean = false
-
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Movie>
+        callback: LoadInitialCallback<Int, Tv>
     ) {
         updateState(Const.State.LOADING)
 
@@ -42,8 +39,8 @@ class MoviePageDataSource(
 
             compositeDisposable.add(
                 Observable.fromCallable {
-                    localData.getMovies().map {
-                        MovieMapper().fromLocal(it)
+                    localData.getTvShows().map {
+                        TvShowMapper().fromLocal(it)
                     }.toMutableList()
                 }.subscribe(
                     {
@@ -57,17 +54,14 @@ class MoviePageDataSource(
             )
         } else {
             compositeDisposable.add(
-                remoteData.getMovies(
-                    1, null, null//,
-//                    Utils.millisToDateString(calendar.timeInMillis, "yyyy-MM-dd"),
-//                    Utils.millisToDateString(calendar.timeInMillis, "yyyy-MM-dd")
-                )
+                remoteData.getTvShows(1)
                     .subscribe(
                         { response ->
                             updateState(Const.State.DONE)
                             callback.onResult(
-                                MovieMapper().fromRemote(response),
-                                null, 2
+                                TvShowMapper().fromRemote(response),
+                                null,
+                                2
                             )
                         },
                         {
@@ -79,21 +73,19 @@ class MoviePageDataSource(
         }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Tv>) {
+//        updateState(Const.State.LOADING)
+
         if (favorite) {
 
         } else {
             compositeDisposable.add(
-                remoteData.getMovies(
-                    params.key, null, null
-//                    Utils.millisToDateString(calendar.timeInMillis, "yyyy-MM-dd"),
-//                    Utils.millisToDateString(calendar.timeInMillis, "yyyy-MM-dd")
-                )
+                remoteData.getTvShows(params.key)
                     .subscribe(
                         { response ->
                             updateState(Const.State.DONE)
                             callback.onResult(
-                                MovieMapper().fromRemote(response),
+                                TvShowMapper().fromRemote(response),
                                 params.key + 1
                             )
                         },
@@ -106,7 +98,7 @@ class MoviePageDataSource(
         }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Tv>) {
         //
     }
 

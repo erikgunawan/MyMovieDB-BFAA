@@ -1,11 +1,9 @@
 package id.ergun.mymoviedb.data.repository.tvShow
 
-import android.content.Context
-import id.ergun.mymoviedb.R
+import id.ergun.mymoviedb.data.dataSource.tvShow.TvShowDataSource
 import id.ergun.mymoviedb.data.local.dao.TvDao
 import id.ergun.mymoviedb.data.mapper.TvShowMapper
 import id.ergun.mymoviedb.data.model.Tv
-import id.ergun.mymoviedb.data.remote.AppService
 import id.ergun.mymoviedb.data.remote.model.TvResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -14,18 +12,16 @@ import io.reactivex.Single
  * Created by erikgunawan on 27/11/19.
  */
 class TvShowRepositoryImpl(
-    private val context: Context,
-    private val remoteData: AppService,
+    private val remoteData: TvShowDataSource,
     private val localData: TvDao
 ) : TvShowRepository {
 
-    override fun getTvShows(): Observable<TvResponse> {
-        return remoteData.getTvShows(language = context.getString(R.string.language_param))
+    override fun getTvShows(page: Int): Observable<TvResponse> {
+        return remoteData.getTvShows(page)
   }
 
     override fun getTvDetail(id: String): Observable<TvResponse.Result> {
         return remoteData.getTvDetail(
-            language = context.getString(R.string.language_param),
             id = id
         )
     }
@@ -55,10 +51,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override fun getSearchTvShow(keyword: String): Observable<TvResponse.Result> {
-        return remoteData.searchTvShow(
-            language = context.getString(R.string.language_param),
-            query = keyword
-        )
+    override fun getSearchTvShow(page: Int, keyword: String): Observable<TvResponse> {
+        return remoteData.searchTvShow(page, keyword)
     }
 }

@@ -9,11 +9,11 @@ import io.reactivex.Single
  * Created by erikgunawan on 24/11/19.
  */
 interface MovieRepository {
-    fun getMovies(page: Int, gte: String?, lte: String?): Observable<MovieResponse>
+    fun getMovies(page: Int?, gte: String?, lte: String?): Observable<MovieResponse>
     fun getMovieDetail(id: String): Observable<MovieResponse.Result>
     fun getFavoriteMovies(): Observable<MutableList<Movie>>
     fun getFavoriteMovie(id: String): Observable<Movie>
     fun addToFavorite(movie: Movie): Single<Unit>
     fun removeFromFavorite(movie: Movie): Single<Unit>
-    fun searchMovie(keyword: String): Observable<MovieResponse>
+    fun searchMovie(page: Int, keyword: String): Observable<MovieResponse>
 }

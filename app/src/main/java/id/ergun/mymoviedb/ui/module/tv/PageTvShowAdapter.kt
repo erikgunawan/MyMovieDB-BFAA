@@ -1,4 +1,4 @@
-package id.ergun.mymoviedb.ui.module.movie
+package id.ergun.mymoviedb.ui.module.tv
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,25 +8,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import id.ergun.mymoviedb.BuildConfig.IMAGE_URL
+import id.ergun.mymoviedb.BuildConfig
 import id.ergun.mymoviedb.R
-import id.ergun.mymoviedb.data.model.Movie
-import id.ergun.mymoviedb.databinding.ItemMovieBinding
+import id.ergun.mymoviedb.data.model.Tv
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 /**
- * Created by alfacart on 30/12/19.
+ * Created by alfacart on 03/02/20.
  */
 
-class PagedMovieAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
+class PageTvShowAdapter : PagedListAdapter<Tv, RecyclerView.ViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        val diffCallback = object : DiffUtil.ItemCallback<Tv>() {
+            override fun areItemsTheSame(oldItem: Tv, newItem: Tv): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            override fun areContentsTheSame(oldItem: Tv, newItem: Tv): Boolean {
                 return oldItem.equals(newItem)
             }
         }
@@ -34,7 +33,7 @@ class PagedMovieAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffC
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        (holder as MovieViewHolder).bind(getItem(position))
+        (holder as TvViewHolder).bind(getItem(position))
 //        val movie = movies[position]
 //        holder.tvTitle.text = movie.title
 //        holder.tvOverview.text = movie.overview
@@ -58,48 +57,29 @@ class PagedMovieAdapter : PagedListAdapter<Movie, RecyclerView.ViewHolder>(diffC
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return MovieViewHolder.create(parent)
+        return TvViewHolder.create(parent)
     }
 
-    class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class TvViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(movie: Movie?) {
-            if (movie == null) return
+        fun bind(tv: Tv?) {
+            if (tv == null) return
 
-            itemView.tv_title.text = movie.title
-            itemView.tv_overview.text = movie.overview
+            itemView.tv_title.text = tv.name
+            itemView.tv_overview.text = tv.overview
 
             Glide.with(itemView.context)
-                .load(IMAGE_URL + movie.posterPath)
+                .load(BuildConfig.IMAGE_URL + tv.posterPath)
                 .apply(RequestOptions.centerInsideTransform())
                 .into(itemView.iv_image)
-
-//        holder.btnDetail.setOnClickListener {
-//            when (context) {
-//                is MainActivity -> context.startActivity(
-//                    MovieDetailActivity.newIntent(
-//                        context,
-//                        movie
-//                    )
-//                )
-//            }
-//        }
         }
 
         companion object {
-            fun create(parent: ViewGroup): MovieViewHolder {
+            fun create(parent: ViewGroup): TvViewHolder {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_movie, parent, false)
-                return MovieViewHolder(view)
+                return TvViewHolder(view)
             }
         }
     }
-
-    inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        val tvTitle = binding.tvTitle!!
-        val tvOverview = binding.tvOverview!!
-        val ivPoster = binding.ivImage!!
-        val btnDetail = binding.viewItem!!
-    }
-
 }

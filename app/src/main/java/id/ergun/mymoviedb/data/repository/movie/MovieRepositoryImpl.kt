@@ -16,7 +16,7 @@ class MovieRepositoryImpl(
     private val localData: MovieDao
 ) : MovieRepository {
 
-    override fun getMovies(page: Int, gte: String?, lte: String?): Observable<MovieResponse> {
+    override fun getMovies(page: Int?, gte: String?, lte: String?): Observable<MovieResponse> {
         return remoteData.getMovies(page = page, lte = lte, gte = gte)
     }
 
@@ -51,7 +51,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override fun searchMovie(keyword: String): Observable<MovieResponse> {
-        return remoteData.searchMovie(keyword)
+    override fun searchMovie(page: Int, keyword: String): Observable<MovieResponse> {
+        return remoteData.searchMovie(page, keyword)
     }
 }

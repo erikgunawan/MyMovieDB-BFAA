@@ -2,6 +2,7 @@
     package="id.ergun.mymoviedb">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="id.ergun.mymoviedb.ui.App"
@@ -29,8 +30,9 @@
             android:configChanges="orientation" />
 
         <activity
-            android:name=".ui.module.movie.search.MovieSearchActivity"
-            android:configChanges="orientation">
+            android:name=".ui.module.search.SearchActivity"
+            android:configChanges="orientation|locale|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -63,7 +65,8 @@
 
         <receiver
             android:name=".ui.notification.ReminderReceiver"
-            android:enabled="true" />
+            android:enabled="true"
+            android:exported="true" />
 
         <service
             android:name=".ui.notification.ReminderService"

@@ -7,9 +7,8 @@ object Const {
 
     const val DEFAULT_PAGE = 1
 
-    const val DAILY_REMINDER_HOUR = 7
-    const val RELEASE_TODAY_REMINDER_HOUR = 8
-
+    const val DAILY_REMINDER_HOUR = 14
+    const val RELEASE_TODAY_REMINDER_HOUR = 14
     class DataModel {
         enum class ErrorType {
             DATA_FOUND,

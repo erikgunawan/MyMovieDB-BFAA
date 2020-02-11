@@ -73,6 +73,8 @@ class ReminderActivity : AppCompatActivity() {
                 if (reminderViewModel.isActiveDailyReminderChange) {
                     if (it)
                         ReminderReceiver().setDailyReminderAlarm(this)
+                    else
+                        ReminderReceiver().cancelAlarm(this)
                 }
             }
         )
@@ -81,13 +83,17 @@ class ReminderActivity : AppCompatActivity() {
             Observer<Boolean> {
                 switch_release_today.isChecked = it
                 if (reminderViewModel.isActiveReleaseTodayReminderChange) {
+                    reminderViewModel.getMovieRelease()
                     if (it)
                         ReminderReceiver().setReleaseTodayReminderAlarm(this)
+                    else
+                        ReminderReceiver().cancelAlarm(this)
                 }
             }
         )
 
-        movieViewModel.movies.observe(this,
+        reminderViewModel.movies.observe(
+            this,
             Observer<MutableList<Movie>> {
                 if (!it.isNullOrEmpty()) {
                     it.forEach { movie ->
@@ -117,12 +123,14 @@ class ReminderActivity : AppCompatActivity() {
             setContentTitle(movie.title)
             setContentText(movie.overview)
 
-            // Launches the app to open the reminder edit screen when tapping the whole notification
-            val intent = Intent(this@ReminderActivity, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
+            val intent = MainActivity.newIntentToMovieDetail(this@ReminderActivity, movie)
 
-            val pendingIntent = PendingIntent.getActivity(this@ReminderActivity, 0, intent, 0)
+            val pendingIntent = PendingIntent.getActivity(
+                this@ReminderActivity,
+                notifyId,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
             setContentIntent(pendingIntent)
         }
 

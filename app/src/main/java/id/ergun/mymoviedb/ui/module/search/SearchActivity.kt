@@ -1,9 +1,8 @@
-package id.ergun.mymoviedb.ui.module.movie.search
+package id.ergun.mymoviedb.ui.module.search
 
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,24 +11,28 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
 import id.ergun.mymoviedb.R
-import id.ergun.mymoviedb.data.model.Movie
-import id.ergun.mymoviedb.ui.module.movie.MovieAdapter
-import id.ergun.mymoviedb.ui.module.utils.Const
-import kotlinx.android.synthetic.main.fragment_movie.*
+import id.ergun.mymoviedb.ui.module.main.ViewPagerAdapter
+import id.ergun.mymoviedb.ui.module.movie.MovieFragment
+import id.ergun.mymoviedb.ui.module.movie.search.MovieSearchViewModel
+import id.ergun.mymoviedb.ui.module.tv.TvShowFragment
+import id.ergun.mymoviedb.ui.module.tv.search.TvShowSearchViewModel
+import kotlinx.android.synthetic.main.fragment_favorite.*
 import kotlinx.android.synthetic.main.view_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by alfacart on 26/12/19.
  */
-class MovieSearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
-    private val movieViewModel: MovieSearchViewModel by viewModel()
+    private val movieViewModel: SearchViewModel by viewModel()
 
-    lateinit var adapter: MovieAdapter
+    private val movieSearchViewModel: MovieSearchViewModel by viewModel()
+    private val tvSearchViewModel: TvShowSearchViewModel by viewModel()
+
+    lateinit var adapter: ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,44 +45,20 @@ class MovieSearchActivity : AppCompatActivity() {
         }
 
 
-//        loadArgument()
+        val fragments = mutableListOf<Fragment>()
+        fragments.add(MovieFragment.newInstance(search = true))
+        fragments.add(TvShowFragment.newInstance(search = true))
 
-        va_data.displayedChild = 0
+        val titles = mutableListOf<String>()
+        titles.add(getString(R.string.movies))
+        titles.add(getString(R.string.tv_show))
 
-        adapter = MovieAdapter(this)
+        adapter = ViewPagerAdapter(supportFragmentManager)
+        adapter.data = fragments
+        adapter.pageTitle = titles
 
-        rv_data.layoutManager = LinearLayoutManager(this)
-        rv_data.setHasFixedSize(true)
-        rv_data.adapter = adapter
-//    setupScrollListener()
-
-//    rv_data.addOnScrollListener()
-
-        movieViewModel.movies.observe(this,
-            Observer<MutableList<Movie>> {
-                adapter.movies.clear()
-                if (!it.isNullOrEmpty()) {
-                    adapter.movies = it
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        )
-
-        movieViewModel.status.observe(this, Observer<Const.DataModel.ErrorType> {
-            when (it) {
-                Const.DataModel.ErrorType.DATA_FOUND -> {
-                    va_data.displayedChild = 1
-                }
-                Const.DataModel.ErrorType.DATA_NOT_FOUND -> {
-                    va_data.displayedChild = 2
-                    tv_message.text = getString(R.string.message_data_not_found)
-                }
-                else -> {
-                    va_data.displayedChild = 2
-                    tv_message.text = getString(R.string.message_error_universal)
-                }
-            }
-        })
+        view_pager.adapter = adapter
+        tab_layout.setupWithViewPager(view_pager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -98,16 +77,18 @@ class MovieSearchActivity : AppCompatActivity() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     searchView.setQuery(query, false)
-                    Log.d("onquerytextsubmit", query.toString())
                     searchView.hideKeyboard()
-                    if (query != null)
-                        movieViewModel.searchMovie(query.toString())
+                    if (query != null) {
+                        movieSearchViewModel.refresh()
+                        movieSearchViewModel.newSearch(query.toString())
 
+                        tvSearchViewModel.refresh()
+                        tvSearchViewModel.newSearch(query.toString())
+                    }
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    Log.d("onquerytextchange", newText.toString())
                     return true
                 }
             })

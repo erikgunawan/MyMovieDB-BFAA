@@ -15,7 +15,7 @@ class MovieDataSourceImpl(
     private val remoteData: AppService
 ) : MovieDataSource {
 
-    override fun getMovies(page: Int, gte: String?, lte: String?): Observable<MovieResponse> {
+    override fun getMovies(page: Int?, gte: String?, lte: String?): Observable<MovieResponse> {
         return remoteData.getMovies(
             language = context.getString(R.string.language_param),
             page = page,
@@ -31,10 +31,11 @@ class MovieDataSourceImpl(
         )
     }
 
-    override fun searchMovie(keyword: String): Observable<MovieResponse> {
+    override fun searchMovie(page: Int, keyword: String): Observable<MovieResponse> {
         return remoteData.searchMovie(
             language = context.getString(R.string.language_param),
-            query = keyword
+            query = keyword,
+            page = page
         )
     }
 }

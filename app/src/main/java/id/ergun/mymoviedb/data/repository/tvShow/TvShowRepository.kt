@@ -9,11 +9,11 @@ import io.reactivex.Single
  * Created by erikgunawan on 27/11/19.
  */
 interface TvShowRepository {
-    fun getTvShows(): Observable<TvResponse>
+    fun getTvShows(page: Int): Observable<TvResponse>
     fun getTvDetail(id: String): Observable<TvResponse.Result>
     fun getFavoriteTvShows(): Observable<MutableList<Tv>>
     fun getFavoriteTvShow(id: String): Observable<Tv>
     fun addToFavorite(tv: Tv): Single<Unit>
     fun removeFromFavorite(tv: Tv): Single<Unit>
-    fun getSearchTvShow(keyword: String): Observable<TvResponse.Result>
+    fun getSearchTvShow(page: Int, keyword: String): Observable<TvResponse>
 }

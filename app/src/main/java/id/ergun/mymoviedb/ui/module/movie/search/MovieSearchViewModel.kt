@@ -1,48 +1,39 @@
 package id.ergun.mymoviedb.ui.module.movie.search
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import id.ergun.mymoviedb.data.mapper.MovieMapper
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import id.ergun.mymoviedb.data.model.Movie
-import id.ergun.mymoviedb.data.repository.movie.MovieRepository
-import id.ergun.mymoviedb.data.repository.tvShow.TvShowRepository
-import id.ergun.mymoviedb.ui.module.utils.Const
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import id.ergun.mymoviedb.data.pageDataSource.movie.search.MovieSearchPageDataSource
+import id.ergun.mymoviedb.data.pageDataSource.movie.search.MovieSearchPageDataSourceFactory
 
 /**
  * Created by alfacart on 28/01/20.
  */
 
 class MovieSearchViewModel(
-    private val movieRepository: MovieRepository,
-    private val tvShowRepository: TvShowRepository
+    private val searchFactory: MovieSearchPageDataSourceFactory
 ) : ViewModel() {
 
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    var movieList: LiveData<PagedList<Movie>> =
+        LivePagedListBuilder(
+            searchFactory,
+            MovieSearchPageDataSourceFactory.pagedListConfig()
+        ).build()
 
-    var movies: MutableLiveData<MutableList<Movie>> = MutableLiveData()
-
-    var status: MutableLiveData<Const.DataModel.ErrorType> = MutableLiveData()
-
-    fun searchMovie(keyword: String) {
-        compositeDisposable.add(
-            movieRepository.searchMovie(keyword)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .map { MovieMapper().fromRemote(it) }
-                .subscribe(
-                    {
-                        if (it.isNullOrEmpty()) status.value =
-                            Const.DataModel.ErrorType.DATA_NOT_FOUND
-                        else status.value = Const.DataModel.ErrorType.DATA_FOUND
-                        movies.value = it
-                    },
-                    {
-                        movies.value = mutableListOf()
-                        status.value = Const.DataModel.ErrorType.EXCEPTION
-                    }
-                )
+    var movieState: LiveData<id.ergun.mymoviedb.data.Const.State> =
+        Transformations.switchMap<MovieSearchPageDataSource, id.ergun.mymoviedb.data.Const.State>(
+            searchFactory.liveData,
+            MovieSearchPageDataSource::state
         )
+
+    fun newSearch(keyword: String) {
+        searchFactory.keyword = keyword
+    }
+
+    fun refresh() {
+        searchFactory.liveData.value?.invalidate()
     }
 }

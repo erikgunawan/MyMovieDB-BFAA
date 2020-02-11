@@ -1,4 +1,4 @@
-package id.ergun.mymoviedb.data.pageDataSource.movie
+package id.ergun.mymoviedb.data.pageDataSource.movie.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
@@ -8,25 +8,25 @@ import id.ergun.mymoviedb.data.local.dao.MovieDao
 import id.ergun.mymoviedb.data.model.Movie
 
 /**
- * Created by alfacart on 31/12/19.
+ * Created by alfacart on 03/02/20.
  */
 
-class MoviePageDataSourceFactory(
+class MovieSearchPageDataSourceFactory(
     private val dataSource: MovieDataSource,
     private val dao: MovieDao
 ) : DataSource.Factory<Int, Movie>() {
 
-    val liveData = MutableLiveData<MoviePageDataSource>()
+    val liveData = MutableLiveData<MovieSearchPageDataSource>()
 
-    var favorite: Boolean = false
+    var keyword: String = ""
 
     override fun create(): DataSource<Int, Movie> {
         val source =
-            MoviePageDataSource(
+            MovieSearchPageDataSource(
                 dataSource,
                 dao
             )
-        source.favorite = favorite
+        source.keyword = this.keyword
         liveData.postValue(source)
         return source
     }
@@ -40,5 +40,4 @@ class MoviePageDataSourceFactory(
             .setEnablePlaceholders(true)
             .build()
     }
-
 }

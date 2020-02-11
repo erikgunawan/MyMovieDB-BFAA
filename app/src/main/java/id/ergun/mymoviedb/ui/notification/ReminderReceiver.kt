@@ -5,8 +5,10 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import id.ergun.mymoviedb.ui.module.utils.Const.DAILY_REMINDER_HOUR
+import id.ergun.mymoviedb.ui.module.utils.Const.RELEASE_TODAY_REMINDER_HOUR
 import id.ergun.mymoviedb.ui.notification.ReminderService.Companion.REPLY_ACTION
 import java.util.*
 
@@ -28,9 +30,9 @@ class ReminderReceiver : BroadcastReceiver() {
             return intent
         }
 
-        private fun getPendingIntent(context: Context): PendingIntent? {
-            val intent =
-                Intent(context, ReminderReceiver::class.java)
+        private fun getPendingIntent(context: Context, kode: Int): PendingIntent? {
+            val intent = Intent(context, ReminderReceiver::class.java)
+            intent.putExtra("kode", kode)
             return PendingIntent.getBroadcast(
                 context,
                 10,
@@ -46,11 +48,12 @@ class ReminderReceiver : BroadcastReceiver() {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val calendar = Calendar.getInstance()
         calendar[Calendar.HOUR_OF_DAY] = DAILY_REMINDER_HOUR
+        calendar[Calendar.MINUTE] = 34
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
-            getPendingIntent(context)
+            getPendingIntent(context, DAILY_REMINDER_ID)
         )
         Toast.makeText(context, "Repeating alarm set up", Toast.LENGTH_SHORT).show()
     }
@@ -59,13 +62,13 @@ class ReminderReceiver : BroadcastReceiver() {
         cancelAlarm(context)
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val calendar = Calendar.getInstance()
-        calendar[Calendar.HOUR_OF_DAY] = 11//RELEASE_TODAY_REMINDER_HOUR
-        calendar[Calendar.MINUTE] = 25
+        calendar[Calendar.HOUR_OF_DAY] = RELEASE_TODAY_REMINDER_HOUR
+        calendar[Calendar.MINUTE] = 37
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
-            getPendingIntent(context)
+            getPendingIntent(context, RELEASE_TODAY_REMINDER_ID)
         )
         Toast.makeText(context, "Repeating alarm set up", Toast.LENGTH_SHORT).show()
     }
@@ -83,7 +86,9 @@ class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
 
         val service = Intent(context, ReminderService::class.java)
-        service.putExtra("reason", intent.getStringExtra("reason"))
+        Log.d("onreceive", "onreceive")
+
+        Log.d("onreceive", intent.getIntExtra("kode", 0).toString())
 
         context.startService(service)
     }

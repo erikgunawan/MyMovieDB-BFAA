@@ -21,7 +21,7 @@ interface AppService {
     fun getMovies(
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
-        ) language: String = LANGUAGE_EN_US, @Query("page") page: Int = 1, @Query("primary_release_date.gte") gte: String? = null,
+        ) language: String = LANGUAGE_EN_US, @Query("page") page: Int?, @Query("primary_release_date.gte") gte: String? = null,
         @Query("primary_release_date.lte") lte: String? = null
     ): Observable<MovieResponse>
 
@@ -38,14 +38,14 @@ interface AppService {
     fun searchMovie(
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
-        ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String
+        ) language: String = LANGUAGE_EN_US, @Query("page") page: Int, @Query(QUERY) query: String
     ): Observable<MovieResponse>
 
     @GET("3/discover/tv")
     fun getTvShows(
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
-        ) language: String = LANGUAGE_EN_US
+        ) language: String = LANGUAGE_EN_US, @Query("page") page: Int = 1
     ): Observable<TvResponse>
 
     @GET("3/tv/{id}")
@@ -60,7 +60,7 @@ interface AppService {
     fun searchTvShow(
         @Query(API_KEY) apiKey: String = API_KEY_VALUE, @Query(
             LANGUAGE
-        ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String
-    ): Observable<TvResponse.Result>
+        ) language: String = LANGUAGE_EN_US, @Query(QUERY) query: String, @Query("page") page: Int
+    ): Observable<TvResponse>
 
 }
